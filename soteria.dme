@@ -1580,7 +1580,6 @@
 #include "interface\interface.dm"
 #include "interface\skin.dmf"
 #include "maps\NEVSoteria.dmm"
-#include "maps\NSS_Humilitus.dmm"
 #include "Scopes Files\gravitygenerator.dm"
 #include "Scopes Files\medical_alarm.dm"
 #include "Scopes Files\signal_modifier.dm"
