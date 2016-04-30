@@ -109,7 +109,7 @@
 
 	if(user.a_intent == "hurt")
 		if(!..()) return
-		//H.apply_effect(5, WEAKEN, 0)
+		H.apply_effect(5, WEAKEN, 0)
 		M.visible_message("<span class='danger'>[M] has been beaten with the [src] by [user]!</span>")
 
 		user.attack_log += "\[[time_stamp()]\]<font color='red'> Beat [M.name] ([M.ckey]) with [src.name]</font>"

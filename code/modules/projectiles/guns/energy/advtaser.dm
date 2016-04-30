@@ -4,13 +4,12 @@
 	icon_state = "advtaser"
 	item_state = null	//so the human update icon uses the icon_state instead.
 	icon_override = 'icons/mob/in-hand/guns.dmi'
-	cell_type = "/obj/item/weapon/stock_parts/cell"
+	cell_type = "/obj/item/weapon/cell/high"
 	origin_tech = null
 	fire_sound = 'sound/weapons/Taser.ogg'
 	projectile_type = "/obj/item/projectile/energy/electrode"
 	charge_cost = 2000
 	modifystate = "advtaserstun"
-	can_flashlight = 1
 	fire_delay = 15
 
 	var/mode = 0 //0 = stun, 1 = disable
@@ -23,7 +22,7 @@
 				charge_cost = 500
 				fire_sound = 'sound/weapons/taser2.ogg'
 				user << "\red [src.name] is now set to Disable."
-				projectile_type = "/obj/item/projectile/beam/disabler"
+				projectile_type = "/obj/item/projectile/beam/stun"
 				modifystate = "advtaserdisable"
 				fire_delay = 0
 			if(1)

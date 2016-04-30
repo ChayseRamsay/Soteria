@@ -10,6 +10,7 @@
 	charge_cost = 2000
 	modifystate = "hoslaserstun"
 	projectile_type = "/obj/item/projectile/energy/electrode"
+	cell_type = "/obj/item/weapon/cell/high"
 	fire_delay = 15
 	var/mode = 2
 
@@ -28,7 +29,7 @@
 				charge_cost = 500
 				fire_sound = 'sound/weapons/taser2.ogg'
 				user << "\red [src.name] is now set to disable."
-				projectile_type = "/obj/item/projectile/beam/disabler"
+				projectile_type = "/obj/item/projectile/beam/stun"
 				modifystate = "hoslaserdisable"
 				fire_delay = 0
 			if(1)

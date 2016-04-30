@@ -10,12 +10,11 @@
 	name = "electrode"
 	icon_state = "spark"
 	nodamage = 1
-	/*
 	stun = 10
 	weaken = 10
 	stutter = 10
-	*/
 	agony = 50
+	kill_count = 7
 	damage_type = HALLOSS
 	//Damage will be handled on the MOB side, to prevent window shattering.
 
@@ -45,9 +44,8 @@
 	damage_type = TOX
 	irradiate = 70
 	nodamage = 0
-
-//	weaken = 10
-//	stutter = 10
+	weaken = 10
+	stutter = 10
 
 
 /obj/item/projectile/energy/bolt/large
@@ -81,11 +79,9 @@
 	name = "electrode"
 	icon_state = "spark"
 	nodamage = 1
-	/*
 	stun = 10
 	weaken = 10
 	stutter = 10
-	*/
 	agony = 70
 	damage_type = HALLOSS
 
