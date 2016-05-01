@@ -13,7 +13,7 @@
 	stun = 10
 	weaken = 10
 	stutter = 10
-	agony = 50
+//	agony = 50
 	kill_count = 7
 	damage_type = HALLOSS
 	//Damage will be handled on the MOB side, to prevent window shattering.
@@ -82,7 +82,7 @@
 	stun = 10
 	weaken = 10
 	stutter = 10
-	agony = 70
+//	agony = 70
 	damage_type = HALLOSS
 
 

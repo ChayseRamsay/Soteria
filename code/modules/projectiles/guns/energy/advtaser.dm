@@ -2,8 +2,7 @@
 	name = "hybrid taser"
 	desc = "A hybrid taser designed to fire both short-range high-power electrodes and long-range disabler beams."
 	icon_state = "advtaser"
-	item_state = null	//so the human update icon uses the icon_state instead.
-	icon_override = 'icons/mob/in-hand/guns.dmi'
+	item_state = "advtaser"
 	cell_type = "/obj/item/weapon/cell/high"
 	origin_tech = null
 	fire_sound = 'sound/weapons/Taser.ogg'
@@ -11,6 +10,11 @@
 	charge_cost = 2000
 	modifystate = "advtaserstun"
 	fire_delay = 15
+	update_icon()
+		if(modifystate)
+			icon_state = "[modifystate]"
+		else
+			icon_state = "[initial(icon_state)]"
 
 	var/mode = 0 //0 = stun, 1 = disable
 

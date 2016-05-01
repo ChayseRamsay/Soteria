@@ -128,8 +128,8 @@ var/list/beam_master = list()
 /obj/item/projectile/beam/stun
 	name = "stun beam"
 	icon_state = "stun"
-	damage = 20
-	agony = 45
+	damage = 0
+	agony = 10
 
 /obj/item/projectile/beam/lastertag/blue
 	name = "lasertag beam"

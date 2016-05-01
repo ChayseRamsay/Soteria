@@ -1,9 +1,8 @@
 /obj/item/weapon/gun/energy/hos
-	name = "HoS Energy Gun"
+	name = "X-01 Multiphase Energy Gun"
 	desc = "This is a modern recreation of the captain's antique laser gun. This gun has several unique firemodes, but lacks the ability to recharge over time."
 	icon_state = "hoslaser"
-	item_state = null	//so the human update icon uses the icon_state instead.
-	icon_override = 'icons/mob/in-hand/guns.dmi'
+	item_state = "hoslaser"
 	force = 10
 	fire_sound = 'sound/weapons/Taser.ogg'
 	origin_tech = "combat=3;magnets=2"
