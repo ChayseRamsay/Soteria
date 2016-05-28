@@ -352,25 +352,13 @@ See code\modules\mob\new_player\preferences_setup.dm for where it's used.
 	deform = 'icons/mob/human_races/r_def_lizard.dmi'
 	language = "Sinta'unathi"
 	tail = "sogtail"
-	unarmed_type = /datum/unarmed_attack/claws
-	secondary_unarmed_type = /datum/unarmed_attack/bite/strong
+	unarmed_type = /datum/unarmed_attack/punch
 	primitive = /mob/living/carbon/monkey/unathi
-	darksight = 3
-	gluttonous = 1
 
-	cold_level_1 = 280 //Default 260 - Lower is better
-	cold_level_2 = 220 //Default 200
-	cold_level_3 = 130 //Default 120
-
-	heat_level_1 = 420 //Default 360 - Higher is better
-	heat_level_2 = 480 //Default 400
-	heat_level_3 = 1100 //Default 1000
-
-	flags = IS_WHITELISTED | HAS_LIPS | HAS_UNDERWEAR | HAS_SKIN_COLOR
+	flags = HAS_LIPS | HAS_UNDERWEAR | HAS_SKIN_COLOR
 
 	flesh_color = "#34AF10"
 
-	reagent_tag = IS_UNATHI
 	base_color = "#066000"
 
 /datum/species/tajaran
