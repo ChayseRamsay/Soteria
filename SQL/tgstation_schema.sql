@@ -74,6 +74,8 @@ CREATE  TABLE IF NOT EXISTS `tgstation`.`ss13_library` (
   `title` TEXT NOT NULL ,
   `content` TEXT NOT NULL ,
   `category` TEXT NOT NULL ,
+  `uploadtime` VARCHAR(16) ,
+  `uploader` VARCHAR(50),
   PRIMARY KEY (`id`) )
 ENGINE = MyISAM
 AUTO_INCREMENT = 184

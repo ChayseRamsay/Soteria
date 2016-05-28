@@ -225,6 +225,7 @@ var/list/AAlarmWireColorToIndex
 #define shuttle_time_to_arrive 6000 // 10 minutes to arrive
 
 	//away missions
+var/list/awaydestinations = list()
 var/awayZLevel = 7 //Hardcoding this for now. Add it to config later. This determines what Z-level away missions take place on.
 var/onPlanet = 0 //Toggles when we are on-planet. You can't launch the away shuttle if we are not
 var/shuttleAway = 0 //Toggled when the shuttle is away. You can't leave orbit without the shuttle on the ship!
