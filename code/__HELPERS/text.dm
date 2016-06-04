@@ -195,10 +195,10 @@ proc/checkhtml(var/t, var/whitelist = paper_tag_whitelist)
 /*
  * Text modification
  */
-/proc/replacetext(text, find, replacement)
+/proc/bayreplacetext(text, find, replacement)
 	return list2text(text2list(text, find), replacement)
 
-/proc/replacetextEx(text, find, replacement)
+/proc/bayreplacetextEx(text, find, replacement)
 	return list2text(text2listEx(text, find), replacement)
 
 //Adds 'u' number of zeros ahead of the text 't'
@@ -241,7 +241,7 @@ proc/checkhtml(var/t, var/whitelist = paper_tag_whitelist)
 //Returns a string with the first element of the string capitalized.
 /proc/capitalize(var/t as text)
 	return uppertext(copytext(t, 1, 2)) + copytext(t, 2)
-	
+
 /proc/capitalized(var/t as text)
 	return capitalize(lowertext(t))
 
