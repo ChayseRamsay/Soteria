@@ -429,13 +429,18 @@ datum/preferences
 			src.be_special = 0
 		else
 			var/n = 0
+			var/banned = null
 			for (var/i in special_roles)
 				if(special_roles[i]) //if mode is available on the server
-					if(jobban_isbanned(user, i))
-						dat += "<b>Be [i]:</b> <font color=red><b> \[BANNED]</b></font><br>"
-					else if(i == "pai candidate")
-						if(jobban_isbanned(user, "pAI"))
-							dat += "<b>Be [i]:</b> <font color=red><b> \[BANNED]</b></font><br>"
+					banned = jobban_isbanned(user, i)
+					if (i == "pai candidate")
+						banned = jobban_isbanned(user, "pAI")
+
+					if (banned == "Age Restricted")
+						var/time = config.age_restrictions[i] - user.client.player_age
+						dat += "<b>Be [i]:</b> <font color=black>\[IN [time] DAYS]</font><br>"
+					else if (banned)
+						dat += "<b>Be [i]:</b> <font color=red><b>\[BANNED]</b></font><br>"
 					else
 						dat += "<b>Be [i]:</b> <a href='?_src_=prefs;preference=be_special;num=[n]'><b>[src.be_special&(1<<n) ? "Yes" : "No"]</b></a><br>"
 				n++
@@ -1080,7 +1085,7 @@ datum/preferences
 					g_skin = rand(0,255)
 					b_skin = rand(0,255)
 				if("bag")
-					backbag = rand(1,4)
+					backbag = rand(1,5)
 				/*if("skin_style")
 					h_style = random_skin_style(gender)*/
 				if("all")
@@ -1539,7 +1544,7 @@ datum/preferences
 		undershirt = 0
 	character.undershirt = undershirt
 
-	if(backbag > 4 || backbag < 1)
+	if(backbag > 5 || backbag < 1)
 		backbag = 1 //Same as above
 	character.backbag = backbag
 

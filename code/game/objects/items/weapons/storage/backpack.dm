@@ -128,9 +128,19 @@
 
 /obj/item/weapon/storage/backpack/industrial
 	name = "industrial backpack"
-	desc = "It's a tough backpack for the daily grind of station life."
+	desc = "It's a tough backpack for the daily grind of ship life."
 	icon_state = "engiepack"
 	item_state = "engiepack"
+
+/obj/item/weapon/storage/backpack/syndie
+	name = "syndicate rucksack"
+	desc = "The latest in carbon fiber and red satin combat rucksack technology. Comfortable and tough!"
+	icon_state = "syndiepack"
+
+/obj/item/weapon/storage/backpack/wizard
+	name = "wizard federation sack"
+	desc = "Perfect for keeping your shining crystal balls inside of."
+	icon_state = "wizardpack"
 
 /*
  * Satchel Types
@@ -206,6 +216,88 @@
 	icon_state = "satchel-cap"
 	item_state = "captainpack"
 
+/obj/item/weapon/storage/backpack/satchel/syndie
+	name = "syndicate satchel"
+	desc = "A satchel in the new age style of a multi-corperate terrorist organisation."
+	icon_state = "satchel-syndie"
+
+/obj/item/weapon/storage/backpack/satchel/wizard
+	name = "wizard federation satchel"
+	desc = "This stylish satchel will put a spell on anyone with some fashion sense to spare."
+	icon_state = "satchel-wizard"
+
+// Duffel Bags
+
+/obj/item/weapon/storage/backpack/duffel
+	name = "duffel bag"
+	desc = "A spacious duffel bag."
+	icon_state = "duffel-norm"
+//	item_state = "duffelbag"			// Maybe include a single one size fits all duffel bag icon if we can't sort
+										// out the 512 icon limit thing? They're all children, so they'd use it.
+
+/obj/item/weapon/storage/backpack/duffel/cap
+	name = "captain's duffel bag"
+	desc = "A rare and special duffel bag for only the most air-headed of Nanotrasen personnel."
+	icon_state = "duffel-captain"
+	item_state = "captainpack"
+
+/obj/item/weapon/storage/backpack/duffel/hyd
+	name = "botanist's duffel bag"
+	desc = "A specially designed duffel bag for containing plant matter, regardless of how questionable it may be."
+	icon_state = "duffel-hydroponics"
+
+/obj/item/weapon/storage/backpack/duffel/vir
+	name = "virology duffel bag"
+	desc = "A sterilized duffel bag suited to those about to unleash pathogenic havoc upon the world."
+	icon_state = "duffel-virology"
+
+/obj/item/weapon/storage/backpack/duffel/med
+	name = "medical duffel bag"
+	desc = "A sterilized duffel bag for the young, upcoming lesbayan."
+	icon_state = "duffel-medical"
+	item_state = "medicalpack"
+
+/obj/item/weapon/storage/backpack/duffel/eng
+	name = "industrial duffel bag"
+	desc = "A rough and tumble duffel bag for the hard working wrench-monkey of tomorrow."
+	icon_state = "duffel-engineering"
+	item_state = "engiepack"
+
+/obj/item/weapon/storage/backpack/duffel/tox
+	name = "scientist's duffel bag"
+	desc = "Handy when it comes to storing volatile materials of the anomalous persuasion."
+	icon_state = "duffel-toxins"
+
+/obj/item/weapon/storage/backpack/duffel/sec
+	name = "security duffel bag"
+	desc = "A grey and blue duffel bag for the boys in colour, with room for all the batons and flashbangs you could ever need."
+	icon_state = "duffel-security"
+	item_state = "securitypack"
+
+/obj/item/weapon/storage/backpack/duffel/gen
+	name = "genetics duffel bag"
+	desc = "It sure won't hold your genes together, but it'll keep the denim ones safe."
+	icon_state = "duffel-genetics"
+
+/obj/item/weapon/storage/backpack/duffel/chem
+	name = "chemistry duffel bag"
+	desc = "Spice up the love life a little."
+	icon_state = "duffel-chemistry"
+
+/obj/item/weapon/storage/backpack/duffel/syndie
+	name = "syndicate duffel bag"
+	desc = "A snazzy black and red duffel bag, perfect for smuggling C4 and Parapens."
+	icon_state = "duffel-syndie"
+
+/obj/item/weapon/storage/backpack/duffel/wizard
+	name = "wizardly duffel bag"
+	desc = "A fancy blue wizard bag, duffel edition."
+	icon_state = "duffel-wizard"
+
+
+// ERT GEAR BOIZ
+
+
 /obj/item/weapon/storage/backpack/ert //General use ruck
 	name = "combat ruck"
 	desc = "A large rucksack with supports and webbing, specifically designed for combat operations and equipment carrying."
@@ -235,91 +327,3 @@
 	desc = "A large rucksack with supports and webbing, specifically designed for combat operations and equipment carrying. This one has bright red highlights, denoting a squad combat trooper."
 	icon_state = "ert_security"
 	item_state = "ert_security"
-
-
-// Duffel bags! Shamelessly borrowed from Paradise!
-
-/obj/item/weapon/storage/backpack/duffel
-	name = "duffelbag"
-	desc = "A large grey duffelbag designed to hold more items than a regular bag."
-	icon = 'storage.dmi'
-	icon_state = "duffel"
-	item_state = "duffel"
-	storage_slots = 9 // Duffelbags can hold more items.
-	max_combined_w_class = 27
-	slowdown = 1
-
-/obj/item/weapon/storage/backpack/duffel/syndimed
-	name = "suspicious duffelbag"
-	desc = "A black and red duffelbag with a red and white cross sewn onto it."
-	icon_state = "duffel-syndimed"
-	item_state = "duffel-syndimed"
-	slowdown = 0
-
-/obj/item/weapon/storage/backpack/duffel/syndiammo
-	name = "suspicious duffelbag"
-	desc = "A black and red duffelbag with a patch depicting shotgun shells sewn onto it."
-	icon_state = "duffel-syndiammo"
-	item_state = "duffel-syndiammo"
-	slowdown = 0
-
-/obj/item/weapon/storage/backpack/duffel/captain
-	name = "captain's duffelbag"
-	desc = "A duffelbag designed to hold large quantities of condoms."
-	icon_state = "duffel-captain"
-	item_state = "duffel-captain"
-
-
-/obj/item/weapon/storage/backpack/duffel/security
-	name = "security duffelbag"
-	desc = "A duffelbag built with robust fabric!"
-	icon_state = "duffel-security"
-	item_state = "duffel-security"
-
-/obj/item/weapon/storage/backpack/duffel/virology
-	name = "virology duffelbag"
-	desc = "A white duffelbag designed to contain biohazards."
-	icon_state = "duffel-viro"
-	item_state = "duffel-viro"
-
-/obj/item/weapon/storage/backpack/duffel/science
-	name = "scientist duffelbag"
-	desc = "A duffelbag designed to hold the secrets of space."
-	icon_state = "duffel-toxins"
-	item_state = "duffel-toxins"
-
-/obj/item/weapon/storage/backpack/duffel/genetics
-	name = "scientist duffelbag"
-	desc = "A duffelbag designed to hold gibbering monkies."
-	icon_state = "duffel-toxins"
-	item_state = "duffel-toxins"
-
-/obj/item/weapon/storage/backpack/duffel/chemistry
-	name = "scientist duffelbag"
-	desc = "A duffelbag designed to hold corrosive substances."
-	icon_state = "duffel-chemistry"
-	item_state = "duffel-chemistry"
-
-/obj/item/weapon/storage/backpack/duffel/medical
-	name = "medical duffelbag"
-	desc = "A duffelbag designed to hold medicine."
-	icon_state = "duffel-med"
-	item_state = "duffel-med"
-
-/obj/item/weapon/storage/backpack/duffel/engineering
-	name = "industrial duffelbag"
-	desc = "A duffelbag designed to hold tools."
-	icon_state = "duffel-eng"
-	item_state = "duffel-eng"
-
-/obj/item/weapon/storage/backpack/duffel/hydro
-	name = "hydroponics duffelbag"
-	desc = "A duffelbag designed to hold seeds and fauna."
-	icon_state = "duffel-hydro"
-	item_state = "duffel-hydro"
-
-/obj/item/weapon/storage/backpack/duffel/clown
-	name = "smiles von wiggleton"
-	desc = "A duffelbag designed to hold bananas and bike horns."
-	icon_state = "duffel-clown"
-	item_state = "duffel-clown"

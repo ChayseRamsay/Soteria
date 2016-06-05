@@ -18,8 +18,6 @@
 				if (client.prefs.muted & MUTE_IC)
 					src << "\red You cannot send IC messages (muted)."
 					return
-				if (src.client.handle_spam_prevention(message,MUTE_IC))
-					return
 			if (stat)
 				return
 			if(!(message))
@@ -36,9 +34,6 @@
 			if (!muzzled)
 				message = "<B>[src]</B> burps."
 				m_type = 2
-		if("deathgasp")
-			message = "<B>The [src.name]</B> lets out a waning guttural screech, green blood bubbling from its maw."
-			m_type = 2
 		if("scratch")
 			if (!src.restrained())
 				message = "<B>The [src.name]</B> scratches."

@@ -9,6 +9,10 @@ var/global/list/blacklist = list()
 
 //Blocks an attempt to connect before even creating our client datum thing.
 world/IsBanned(key,address,computer_id)
+	if(!computer_id)
+		message_admins("\blue Failed Login: [key] ([address]) Null computerID")
+		return list("reason"="Bad computerID", "desc"="\nReason: Blank computerID returned from client.")
+
 	if(ckey(key) in admin_datums)
 		return ..()
 
@@ -21,11 +25,7 @@ world/IsBanned(key,address,computer_id)
 		message_admins("\blue Failed Login: [key] - Guests not allowed")
 		del Adminbot
 		return list("reason"="guest", "desc"="\nReason: Guests not allowed. Please sign in with a byond account.")
-	if (config.panic_bunker && dbcon && dbcon.IsConnected())
-		log_access("Failed Login: [key] - Guests not allowed during panic bunker")
-		message_admins("\blue Failed Login: [key] - Guest attempted connection during Panic Bunker")
-		del Adminbot
-		return list("reason"="guest", "desc"="\nReason: Sorry but the server is currently not accepting connections from never before seen players or guests. If you have played on this server with a byond account before, please log in to the byond account you have played from.")
+
 	//check if the IP address is a known TOR node
 	if(config && config.ToRban && ToRban_isbanned(address))
 		log_access("Failed Login: [src] - Banned: ToR")
@@ -102,6 +102,7 @@ world/IsBanned(key,address,computer_id)
 		var/desc = null
 		var/tobantype = null
 
+		var/mirrorid = null
 		var/multireason = null
 		var/newreason = null
 
@@ -115,20 +116,27 @@ world/IsBanned(key,address,computer_id)
 			failedcid = 0
 			cidquery = " OR computerid = '[computer_id]' "
 
-		var/DBQuery/query = dbcon.NewQuery("SELECT ckey, ip, computerid, a_ckey, reason, expiration_time, duration, bantime, bantype FROM ss13_ban WHERE (ckey = '[ckeytext]' [ipquery] [cidquery]) AND (bantype = 'PERMABAN'  OR (bantype = 'TEMPBAN' AND expiration_time > Now())) AND isnull(unbanned)")
+		var/DBQuery/query = dbcon.NewQuery("SELECT id, mirrorid, ckey, ip, computerid, a_ckey, reason, expiration_time, duration, bantime, bantype FROM ss13_ban WHERE (ckey = '[ckeytext]' [ipquery] [cidquery]) AND (bantype = 'PERMABAN'  OR (bantype = 'TEMPBAN' AND expiration_time > Now())) AND isnull(unbanned)")
 
 		query.Execute()
 
 		while(query.NextRow())
-			var/pckey = query.item[1]
-			var/pip = query.item[2]
-			var/pcid = query.item[3]
-			var/ackey = query.item[4]
-			var/reason = query.item[5]
-			var/expiration = query.item[6]
-			var/duration = query.item[7]
-			var/bantime = query.item[8]
-			var/bantype = query.item[9]
+			var/id = text2num(query.item[1])
+			mirrorid = text2num(query.item[2])
+			var/pckey = query.item[3]
+			var/pip = query.item[4]
+			var/pcid = query.item[5]
+			var/ackey = query.item[6]
+			var/reason = query.item[7]
+			var/expiration = query.item[8]
+			var/duration = query.item[9]
+			var/bantime = query.item[10]
+			var/bantype = query.item[11]
+
+			if (!mirrorid)
+				mirrorid = id
+
+			world.log << "We got here! Wee!"
 
 			var/expires = ""
 			if(text2num(duration) > 0)
@@ -169,7 +177,7 @@ world/IsBanned(key,address,computer_id)
 				toban = 1
 
 		if(banFlag & (KEYBAN|IDBAN|IPBAN))
-			Adminbot.DB_ban_record(1, null, null, multireason, null, null, ckey(key), 1, address, computer_id)
+			Adminbot.DB_ban_record(1, null, null, multireason, null, null, ckey(key), 1, address, computer_id, mirrorid)
 			notes_add_sql(key, newreason, null, address, computer_id)
 
 		if(toban)

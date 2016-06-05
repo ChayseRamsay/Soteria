@@ -25,7 +25,8 @@
 		"/obj/item/weapon/airlock_electronics",
 		"/obj/item/weapon/module/power_control",
 		"/obj/item/weapon/cell",
-		"/obj/item/weapon/hand_tele")
+		"/obj/item/weapon/hand_tele",
+		"/obj/item/weapon/soap/fluff/jace_toothbrush")
 	storage_slots = 14
 	max_combined_w_class = 42
 	max_w_class = 3
@@ -97,12 +98,44 @@
 	icon_state = "raieed_sandals"
 	contained_sprite = 1
 
-/obj/item/clothing/suit/storage/fluff/raieed_labcoat //Treasured Labcoat - Raieed Amari - nikolaithebeast - DONE
-	name = "torn labcoat"
-	desc = "A old labcoat, torn beyond reorganization, but yet it still seems to be kept for."
+// Rai Amari - nikolaithebeast - Stitched Labcoat
+/obj/item/clothing/suit/storage/labcoat/fluff/raieed_labcoat
+	name = "stitched labcoat"
+	desc = "A stiched up labcoat. It looks particularly torn up, but someone has spent a great deal of time fixing the damage."
 	icon = 'icons/obj/custom_items/raieed_labcoat.dmi'
-	icon_state = "raieed_labcoat"
+	icon_state = "raieed_labcoat_open"
 	contained_sprite = 1
+
+	 // verb/toggle() as normally defined in labcoat.dm
+	toggle()
+		set name = "Toggle Labcoat Buttons"
+		set category = "Object"
+		set src in usr
+
+		if(!usr.canmove || usr.stat || usr.restrained())
+			return 0
+
+		switch(icon_state)
+			if("raieed_labcoat_open")
+				icon_state = "raieed_labcoat_closed"
+				usr << "You button up the stitched labcoat."
+			if("raieed_labcoat_closed")
+				icon_state = "raieed_labcoat_open"
+				usr << "You unbutton the stiched labcoat."
+
+			else
+				usr << "SierraKomodo broke a thing. Bug report time!"
+				return
+
+		usr.update_inv_wear_suit()
+
+// Old item
+// /obj/item/clothing/suit/storage/fluff/raieed_labcoat //Treasured Labcoat - Raieed Amari - nikolaithebeast - DONE
+	// name = "torn labcoat"
+	// desc = "A old labcoat, torn beyond reorganization, but yet it still seems to be kept for."
+	// icon = 'icons/obj/custom_items/raieed_labcoat.dmi'
+	// icon_state = "raieed_labcoat"
+	// contained_sprite = 1
 
 /obj/item/weapon/folder/fluff/may_notebook //May Izumi's Notebook - May Izumi - lk600 - DONE
 	name = "May Izumi's Notebook"
@@ -768,9 +801,9 @@ THIS SHIT IS MISSING ANY AND ALL SPRITE FILES
 		if(isliving(user))
 			user.visible_message("\red [user] flashes their [src].\nIt reads: Muhammad Hamil, Internal Investigations, Persepolis..","\red You display the [src].\nIt reads: Muhammad Hamil, Internal Investigations, Persepolis.")
 
-/obj/item/clothing/mask/gas/fluff/firefighting // Modified Gas Mask - Oliver Stefan - Nbielinski - DONE - Repurposed by Nick~
-	desc = "A black breathing mask that has 'Firefighter' inscribed on the side."
-	name = "Firefighting SCBA Mask"
+/obj/item/clothing/mask/gas/fluff/stefan_mask // Modified Gas Mask - Oliver Stefan - Nbielinski - DONE
+	desc = "This odd looking gas mask is quite clearly not of NanoTrasen origin as it sports a black metal polish, as well as a reflective face plate that mirrors the view of the mask itself. This particular mask appears to breathe with the user, hissing when they exhale, and whining softly as they inhale."
+	name = "Modified Gas Mask"
 	icon = 'icons/obj/custom_items/stefan_mask.dmi'
 	icon_state = "stefan_mask"
 	contained_sprite = 1
@@ -1096,8 +1129,8 @@ THIS SHIT IS MISSING ITS SPRITES TOO
 	contained_sprite = 1
 
 /obj/item/clothing/head/beret/fluff/faust_beret //military beret - Bryce Faust - Hackie Mhan
-	name = "Marine beret"
-	desc = "A green beret with an NTSC emblem. For Marines that are more inclined towards style than safety."
+	name = "military beret"
+	desc = "This beret has the Eridani Federal Army symbol, it's old but still in good shape."
 	icon = 'icons/obj/custom_items/faust_beret.dmi'
 	icon_state = "faust_beret"
 	contained_sprite = 1
@@ -1209,311 +1242,6 @@ END R I P HAZERI
 		if(isliving(user))
 			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec], Emergency Response Team.","\red You raise [src].\nThey read: [rank] [surname] - [spec], Emergency Response Team.")
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/obj/item/clothing/tie/marine_dogtags_adams // James Adams
-	name = "PFC. James Adams' dogtags"
-	desc = "James Adams, Private First Class, 1st Squad 3rd Platoon"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "PFC"
-	var/surname = "James Adams"
-	var/spec = "1st Squad"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.","\red You raise [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.")
-
-/obj/item/clothing/tie/marine_dogtags_millhouse // Anderson Millhouse
-	name = "Pvt. Anderson Millhouse's' dogtags"
-	desc = "Anderson Millhouse, Private, 1st Squad 3rd Platoon"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "Pvt."
-	var/surname = "Anderson Millhouse"
-	var/spec = "1st Squad"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.","\red You raise [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.")
-
-/obj/item/clothing/tie/marine_dogtags_wolfe // Robert Wolfe
-	name = "Pvt. Robert Wolfe's dogtags"
-	desc = "Robert Wolfe, Private, 2nd Squad 3rd Platoon"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "Pvt."
-	var/surname = "Robert Wolfe"
-	var/spec = "2nd Squad"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.","\red You raise [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.")
-
-/obj/item/clothing/tie/marine_dogtags_mennai // Ezra Mennai
-	name = "Crewman Ezra Mennai's dogtags"
-	desc = "Ezra Mennai, Crewman, 2nd Squad 3rd Platoon"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "Crewman"
-	var/surname = "Ezra Mennai"
-	var/spec = "2nd Squad"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.","\red You raise [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.")
-
-/obj/item/clothing/tie/marine_dogtags_thompson // Reese Thompson
-	name = "Ensign Reese Thompson's dogtags"
-	desc = "Reese Thompson, Ensign, Pilot 1st Squadron"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "Ensign"
-	var/surname = "Reese Thomspon"
-	var/spec = "Pilot"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] 1st Squadron.","\red You raise [src].\nThey read: [rank] [surname] - [spec] 1st Squadron.")
-
-/obj/item/clothing/tie/marine_dogtags_keara // Ashley keara
-	name = "Cpl. Ashley Keara's dogtags"
-	desc = "Ashley Keara, Corporal, NTSC Military Police"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "Cpl."
-	var/surname = "Ashley Keara"
-	var/spec = "NTSC"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] Military Police.","\red You raise [src].\nThey read: [rank] [surname] - [spec] Military Police.")
-
-/obj/item/clothing/tie/marine_dogtags_levett // Aene Levett
-	name = "CPO Aene Levett's dogtags"
-	desc = "Aene Levett, Chief Petty Officer, Chief Corpsman 3rd Platoon"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "CPO"
-	var/surname = "Aene Levett"
-	var/spec = "Chief Corpsman"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.","\red You raise [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.")
-
-/obj/item/clothing/tie/marine_dogtags_ottosson // Woodrossian Ottosson
-	name = "Gun. Sgt. Woodrossian Ottosson's dogtags"
-	desc = "Woodrossian Ottosson, Gunnery Sergeant, Platoon Sergeant 3rd Platoon"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "Gun. Sgt."
-	var/surname = "Woodrossian Ottosson"
-	var/spec = "Platoon Sergeant"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.","\red You raise [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.")
-
-/obj/item/clothing/tie/marine_dogtags_lawrence // Ryan St. Lawrence
-	name = "Cpl. Ryan St. Lawrence's dogtags"
-	desc = "Ryan St. Lawrence, Corporal, 1st Squad 2nd Fireteam Lead 3rd Platoon"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "Cpl."
-	var/surname = "Ryan St. Lawrence"
-	var/spec = "1st Squad 2nd Fireteam Lead"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.","\red You raise [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.")
-
-/obj/item/clothing/tie/marine_dogtags_nakamura // Ethan Nakamura
-	name = "Cpl. Ethan Nakamura's dogtags"
-	desc = "Ethan Nakamura, Corporal, 2nd Squad 3rd Platoon"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "Cpl."
-	var/surname = "Ryan St. Lawrence"
-	var/spec = "2nd Squad"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.","\red You raise [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.")
-
-/obj/item/clothing/tie/marine_dogtags_hunt // Riley Hunt
-	name = "Cpl. Riley Hunt's dogtags"
-	desc = "Riley Hunt, Corporal, 1st Squad 3rd Platoon"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "Cpl."
-	var/surname = "Riley Hunt"
-	var/spec = "1st Squad"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.","\red You raise [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.")
-
-/obj/item/clothing/tie/marine_dogtags_fox // James Fox
-	name = "Lt. James Fox's dogtags"
-	desc = "James Fox, Lieutenant, NMV-BC Manticore Research and Development"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "Lt."
-	var/surname = "James Fox"
-	var/spec = "NMV-BC Manticore"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] Research and Development.","\red You raise [src].\nThey read: [rank] [surname] - [spec] Research and Development.")
-
-/obj/item/clothing/tie/marine_dogtags_anders // Seneca Anders
-	name = "Lt. Seneca Anders' dogtags"
-	desc = "Seneca Anders, Lieutenant, NMV-BC Manticore Chief Medical Officer"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "Cpl."
-	var/surname = "Seneca Anders"
-	var/spec = "NMV-BC Manticore"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] Chief Medical Officer.","\red You raise [src].\nThey read: [rank] [surname] - [spec] Chief Medical Officer.")
-
-/obj/item/clothing/tie/marine_dogtags_rochette // Mirabelle Rochette
-	name = "Lt. Com. Mirabelle Rochette's dogtags"
-	desc = "Mirabelle Rochette, Lieutenant Commander, NMV-BC Manticore Weapons Officer"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "Lt. Cdr."
-	var/surname = "Mirabelle Rochette"
-	var/spec = "NMV-BC Manticore"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] Weapons Officer.","\red You raise [src].\nThey read: [rank] [surname] - [spec] Weapons Officer.")
-
-/obj/item/clothing/tie/marine_dogtags_davidson // Aaron Davidson
-	name = "Pvt. Aaron Davidson's dogtags"
-	desc = "Aaron Davidson, Private, 2nd Squad 3rd Platoon"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "Pvt."
-	var/surname = "Aaron Davidson"
-	var/spec = "2nd Squad"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.","\red You raise [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.")
-
-/obj/item/clothing/tie/marine_dogtags_blackburn // Petra Blackburn
-	name = "Sgt. Petra Blackburn's dogtags"
-	desc = "Petra Blackburn, Sergeant, 1st Squad Leader 3rd Platoon"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "Sgt."
-	var/surname = "Petra Blackburn"
-	var/spec = "1st Squad Leader"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.","\red You raise [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.")
-
-/obj/item/clothing/tie/marine_dogtags_pthompson // Peter Thompson
-	name = "PFC Peter Thompson's dogtags"
-	desc = "Peter Thompson, Private First Class, 1st Squad 3rd Platoon"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "PFC"
-	var/surname = "Peter Thompson"
-	var/spec = "1st Squad"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.","\red You raise [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.")
-
-/obj/item/clothing/tie/marine_dogtags_nash // Janette Nash
-	name = "Private Janette Nash's dogtags"
-	desc = "Janette Nash, Private, 2nd Squad 3rd Platoon"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "Pvt."
-	var/surname = "Janette Nash"
-	var/spec = "2nd Squad"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.","\red You raise [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.")
-
-/obj/item/clothing/tie/marine_dogtags_blackfire // Julius Blackfire
-	name = "2Lt. Julius Blackfire's dogtags"
-	desc = "Julius Blackfire, Second Lieutenant, Platoon Leader 3rd Platoon"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "2Lt."
-	var/surname = "Julius Blackfire"
-	var/spec = "Platoon Leader"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.","\red You raise [src].\nThey read: [rank] [surname] - [spec] 3rd Platoon.")
-
-/obj/item/clothing/tie/marine_dogtags_xanatos // Danielle Xanatos
-	name = "Cdr. Danielle Xanatos's dogtags"
-	desc = "Danielle Xanatos, Commander, NMV-BC Manticore Executive Officer"
-	icon_state = "ert_tags"
-	item_color = "holobadge-cord"
-	slot_flags = SLOT_MASK
-	slot_flags = SLOT_BELT
-	var/rank = "Cdr."
-	var/surname = "Danielle Xanatos"
-	var/spec = "Infantry Officer"
-
-	attack_self(mob/user as mob)
-		if(isliving(user))
-			user.visible_message("\red [user] raises [src].\nThey read: [rank] [surname] - [spec] Executive Officer.","\red You raise [src].\nThey read: [rank] [surname] - [spec] Executive Officer.")
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 /obj/item/clothing/tie/fluff/scofield_watch //Hunter Scofield - Smifboy78
 	name = "gold pocket-watch"
 	desc = "A small pocket watch. It appears to be gold plated, with the initials D.M.S on the back."
@@ -1554,152 +1282,173 @@ END R I P HAZERI
 		user.visible_message("\red [user] holds up their [src].\nIt reads: Prosthetic rejection syndrome. Patient's body rejects mechanical eyes. Shaded eyewear required.","\red You display the [src], showing the room your medical condition.")
 
 
+// Hayden Green's Mech Helmet - Doomberg
+/obj/item/clothing/head/helmet/fluff/hayden_mechhelmet
+	name = "mech pilot helmet"
+	desc = "A sturdy green helmet with a dark visor. Not brand new, but well maintained."
+	icon = 'icons/obj/custom_items/hayden_mechhelmet.dmi'
+	icon_state = "hayden_mechhelmet"
+	item_state = "hayden_mechhelmet"
+	flags_inv = HIDEEARS
+	contained_sprite = 1
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+
+// Chive's Engraved Auto Injector - cobracoco007
+/obj/item/fluff/chive_engravedautoinjector
+	name = "engraved broken autoinjector"
+	desc = "A slightly rusty auto-injector that appears to have the initials 'W.N.' engraved on it."
+	icon = 'icons/obj/custom_items/chive_engravedautoinjector.dmi'
+	icon_state = "chive_engravedautoinjector"
+	item_state = "chive_engravedautoinjector"
+	contained_sprite = 1
+	sharp = 1
+	force = 1
+
+// Varan Truesight's Dataslate - Gollee
+/obj/item/fluff/varan_dataslate
+	name = "data slate"
+	desc = "A chrome-silver data slate. Along the side, there is a stylised brand mark, with 'Biesel Electronics Ophreion 4000' written underneath."
+	icon = 'icons/obj/custom_items/varan_dataslate.dmi'
+	icon_state = "varan_dataslate"
+	item_state = "varan_dataslate"
+	contained_sprite = 1
+
+// Fortune Bloise - swat43 - Shield Pendant
+/obj/item/clothing/tie/fluff/fortune_shieldpendant
+	name = "shield pendant"
+	desc = "A small blue shield shaped pendant with two small wings attached to it."
+	icon = 'icons/obj/custom_items/fortune_shieldpendant.dmi'
+	icon_state = "fortune_shieldpendant"
+	item_color = "fortune_shieldpendant"
+	contained_sprite = 1
+	slot_flags = SLOT_MASK
+
+/obj/item/clothing/tie/fluff/fortune_shieldpendant/New()
+	inv_overlay = image("icon" = 'icons/obj/custom_items/fortune_shieldpendant.dmi', "icon_state" = "fortune_shieldpendant_w")
 
 
+// Jace Evan's toothbrush - Wittly
+/obj/item/weapon/soap/fluff/jace_toothbrush
+	name = "toothbrush"
+	desc = "An old toothbrush. It looks well used."
+	icon = 'icons/obj/custom_items/jace_toothbrush.dmi'
+	icon_state = "jace_toothbrush"
+	var/cleanspeed = 20
 
-//////////////////////////// TheBujinkan ///////////////////////////////////////////
+/obj/item/weapon/soap/fluff/jace_toothbrush/Crossed(AM as mob|obj)
+	return
 
-/obj/item/weapon/coin/silver/fluff/thebujinkan
-	name = "Pound Coin"
-	desc = "An extremely old item of currency from Terra. The two sides of the coin are very tarnished with age. However, you can just about make out a face upon one of them..."
+/obj/item/weapon/soap/fluff/jace_toothbrush/afterattack(atom/target, mob/user as mob, proximity)
+	if(!proximity) return
 
-/////////////////////////// ChiGarnett /////////////////////////////////////////////
+	if(user.client && (target in user.client.screen))
+		return
+	if (istype(target,/obj/effect/decal/cleanable))
+		user.visible_message("<span class='warning'>[user] begins to scrub \the [target.name] out with [src].</span>")
+		if(do_after(user, src.cleanspeed) && target)
+			user << "<span class='notice'>You scrub \the [target.name] out.</span>"
+			del(target)
+	else
+		user.visible_message("<span class='warning'>[user] begins to clean \the [target.name] with [src].</span>")
+		if(do_after(user, src.cleanspeed))
+			user << "<span class='notice'>You clean \the [target.name].</span>"
+			var/obj/effect/decal/cleanable/C = locate() in target
+			del(C)
+			target.clean_blood()
+	return
 
-/obj/item/weapon/storage/belt/utility/fluff/chigarnett
-	name = "black leather belt"
-	desc = "A utility belt made from black leather. It looks as though it was meant to hold tools."
-	icon_state = "securitybelt"
-
-////////////////////////// Sandcom ///////////////////////////////////////////////////
-
-/obj/item/clothing/suit/storage/labcoat/fluff/aeneas_rinil/sandcom
-	name = "black hooded trenchcoat"
-	desc = "A black, hooded trenchcoat with red stitching down the back. The very look of it seems oddly tailored but fairly practical. Anyone who wears this clearly had it made with not being seen in mind."
-
-/obj/item/clothing/tie/fluff/nasir_khayyam_1/sandcom
-	name = "O'Brian family crest"
-	desc = "An obsidian medallion with silver edging, strung on a silver necklace. In the center is a coat of arms, on which a skull is in the top left corner, a pen in the top right, a cross over a shield on the bottom left, and an energy gun crossed over what appears to be an energy sword in the bottom right."
-
-///////////////////////// Bewawolf19 //////////////////////////////////////////////////
-
-/obj/item/clothing/suit/storage/lawyer/bluejacket/fluff/bewawolf19
-	name = "pristine blue suit jacket"
-	desc = "A fine-looking suit jacket that has \"Property of Vasiliv Tarkov\" scrawled on the back tag."
-
-//////////////////////////// Grolarg ///////////////////////////////////////////////////
-
-/obj/item/clothing/head/collectable/HoS/fluff/grolarg
-	name = "Hala\'s black cap"
-	desc = "A fancy-looking black hat. The initials \'H.A.\' are printed on the inside."
-
-//////////////////////////// BitFlimsy ///////////////////////////////////////////////////
-
-/obj/item/device/measuring_tape/fluff/harold_tompkins
-	desc = "A simple tape measure, looking slightly worn"
-
-/obj/item/weapon/gun/projectile/detective/fluff/shaun_pavlov
-	name = "engraved Colt M1911"
-	desc = "From afar it is clear that this handgun is well looked after. Upon closer inspection you see an intricately carved handgun. The slide has the names 'Calum, Katie, Brenna, Georgi, James, Lynn' all linked together in a stylish flowing scripture, the latter name seeming to be a fresher engraving. The hand grip covers are made of polished walnut and the words 'Habitare in memoria' are carved cleanly in the same style as that of the slide.."
-
-//////////////////////////// FatalEYES ///////////////////////////////////////////////////
-
-/obj/item/weapon/coin/diamond/fluff/lechoslaw_basinger
-	name = "scratched diamond coin"
-	desc = "A regular looking diamond coin that seems to have some scratches on each of the side of it."
-	icon = 'icons/obj/custom_items.dmi'
-	icon_state = "coin_diamondscratch"
-	item_state = "coin_diamondscratch"
+/obj/item/weapon/soap/fluff/jace_toothbrush/attack(mob/target as mob, mob/user as mob)
+	return
 
 
-/obj/item/weapon/coin/diamond/fluff/lechoslaw_basinger/attack_self(mob/user as mob)
-	user.visible_message("<span class='notice'>[user] has thrown \the [src]. It lands on tails! </span>")
-
-//////////////////////////// Cutovercascade ///////////////////////////////////////////////////
-
-obj/item/clothing/head/ushanka/fluff/rufaro_nia
-	name = "Nia's ushanka"
-	desc = "This pink Russian ushanka has been modified to have sewn-in holes in the back for her spines to poke out of the hat without causing a rip. It covers everything to an inch above her eye. The spines point straight out her head, but point at an acute angle backwards to the top of her head, to the base of her neck in one neat row. The Ushanka itself has a Tendaji flag and symbol on the front, where the normal soviet star would go. The earflaps are unbuttoned and left down."
-	icon = 'icons/obj/custom_items.dmi'
-	icon_state = "niaushanka"
-	item_state = "niaushanka"
-
-//////////////////////////// DerpMaestro ///////////////////////////////////////////////////
-/*
-/obj/item/device/kit/suit/fluff/dave_mararan
-	name = "Sam's hazard hardsuit modification kit"
-	desc = "A kit for modifying hard-suits. The label on the box says, 'To Dad, for when the going gets tough.'."
-
-	new_name = "Sam's hazard"
-	new_suit_desc = "An older model of armored NT Hardsuit emblazoned in security colors."
-	new_helmet_desc = "An older NT Hardsuit Helmet with built-in atmospheric filters."
-	helmet_icon = "rig0-hazardhardsuit"
-	suit_icon = "rig-hazardhardsuit"
-	helmet_color = "hazardhardsuit"
-*/
-//////////////////////////// Serendipitous O. Currance ///////////////////////////////////////////////////
-
-/obj/item/clothing/suit/storage/labcoat/fluff/chris_broadwalk
-	name = "Chris' worn lab-coat"
-	desc = "The lab-coat is burned and stained from years of use and abuse.."
-	icon = 'icons/obj/custom_items.dmi'
-	icon_state = "labcoat_burnt"
-	item_state = "labcoat_burnt"
-
-//////////////////////////// Vexif ///////////////////////////////////////////////////
-
-/obj/item/weapon/storage/fancy/cigar/fluff/natachalavoie
-	name = "engraved cigar case"
-	desc = "It is a engraved cigar case with hand wrapped cigars"
-
-//////////////////////////// Crystal9156 ///////////////////////////////////////////////////
-
-/obj/item/weapon/pen/fluff/crystal_nole
-	name = "Gilded Pen"
-	desc = "A fancy golden pen with the initials C.E.N engraved into the side with Obsidian colored lettering."
-
-/obj/item/clothing/suit/storage/labcoat/fluff/ezra_mennai
-	name = "medical trenchcoat"
-	desc = "A specialized trench-coat with a big white square with a red cross over it on the breast, while the rest of the trench-coat is black with red trim."
-	icon = 'icons/obj/custom_items.dmi'
-	icon_state = "ezramennai"
-	item_state = "ezramennai"
-
-//////////////////////////// Goragh ///////////////////////////////////////////////////
-
-/obj/item/weapon/pen/blue/fluff/marc_mosser
-	name = "fancy pen"
-	desc = "A fancy metal pen. It uses blue ink. An inscription on one side reads, 'CCIA Staff.'"
-
-//////////////////////////// Nitebomber ///////////////////////////////////////////////////
-
-/obj/item/clothing/glasses/sunglasses/fluff/saeed_alfilistine
-	name = "Saeed's sunglasses"
-	desc = "A pair of futuristic sunglasses that appear to attach directly to someone's forehead, just above their eyebrows. This pair appears to be designed for a tajaran"
-	icon_state = "jensenshades"
-
-//////////////////////////// Dr. Bean-Dip ///////////////////////////////////////////////////
-
-/obj/item/clothing/suit/armor/vest/warden/fluff/niruka
-	name = "Niruka's warden jacket"
-	desc = "This is a slightly faded warden jacket with a hide mantle thrown over it. Looking closely, you can see the name, 'Isingoma Niruka' written on the collar. That is, if it isn't being worn."
-	icon = 'icons/obj/custom_items.dmi'
-	icon_state = "nirukajacket"
-	item_state = "nirukajacket"
+// Inis Truesight's Medical Wristband - Gollee
+/obj/item/clothing/gloves/fluff/inis_medicalwristband
+	name = "medical wristband - EPILEPSY"
+	desc = "A stainless steel tag on a plastic wristband. The tag reads 'ABSENCE EPILEPSY-2U CITALOPRAM'"
+	icon = 'icons/obj/custom_items/inis_medicalwristband.dmi'
+	icon_state = "inis_medicalwristband"
+	contained_sprite = 1
+	species_restricted = list("exclude") // So that any species can wear it (It's a wristband, not full-fingered gloves).
+	sprite_sheets = list() // To remove the 'Vox' entry that would override the sprite if worn by a vox
+	gender = "neuter" // Makes it read 'Has a medical wristband on his hands' instead of 'Has some medical wristband on his hands'
 
 
-/obj/item/clothing/head/helmet/warden/fluff/niruka
-	name = "Niruka's warden cap"
-	desc = "A blue colored, old looking warden's hat with 'Isingoma Niruka: 337' written on the metal on top of the badge"
-	icon = 'icons/obj/custom_items.dmi'
-	icon_state = "nirukacap"
-	item_state = "nirukacap"
+// Halo O'Kyle's Research Notebook - Nogo3
+/obj/item/weapon/folder/fluff/halo_researchnotebook
+	name = "research notebook"
+	desc = "A plain notebook with a blue binding that has 'RESEARCH NOTES' sprawled on the cover, and the letters 'H.K.' dotting the bottom right. Post-it notes and loose papers stick out haphazardly, and it looks like it's been repaired with tape more than once."
+	icon = 'icons/obj/custom_items/halo_researchnotebook.dmi'
+	icon_state = "halo_researchnotebook"
+	contained_sprite = 1
 
-/////////////////////////////// Acera ///////////////////////////////////////////////////////
+
+// Lua Saudosa's 'Lucky' chip - Killerhurtz
+/obj/item/fluff/lua_luckychip
+	name = "'Lucky' chip"
+	desc = "A round, grey, plastic object - a chip or coin of some sort. On one side there is a logo engraved into it, though it is not familiar. On the other, the words 'One key, ten thousand minds' surround engraved text much too small to read."
+	icon = 'icons/obj/custom_items/lua_luckychip.dmi'
+	icon_state = "lua_luckychip"
+	contained_sprite = 1
+	slot_flags = SLOT_EARS
 
 
-/obj/item/clothing/under/rank/medical/fluff/valeera
-	name = "Black scrubs"
-	desc = "It's made of a special fiber that provides minor protection against biohazards. This one is in black."
-	icon = 'icons/obj/custom_items.dmi'
-	icon_state = "scrubsblack"
-	item_state = "scrubsblack"
+// Miko Du'Razhu's sake bottle - Jakers457
+/obj/item/weapon/reagent_containers/food/drinks/bottle/fluff/miko_sakebottle
+	name = "sake bottle"
+	desc = "A stone bottle of Sake with a Blue Moon painted on it."
+	icon = 'icons/obj/custom_items/miko_sakebottle.dmi'
+	icon_state = "miko_sakebottle"
+	isGlass = 0 // Description says stone bottle, not glass
+
+	New()
+		..()
+		reagents.add_reagent("sake", 100)
+
+// Lori Alvarez's pink screwdriver - NebulaFlare
+/obj/item/weapon/screwdriver/fluff/lori_pinkscrewdriver
+	name = "Pink Screwdriver"
+	desc = "A pink screwdriver. 'Margrite' is etched into the handle."
+	icon = 'icons/obj/items.dmi'
+	icon_state = "screwdriver3"
+	item_state = "screwdriver_purple"
+
+/obj/item/weapon/screwdriver/fluff/lori_pinkscrewdriver/New()
+	if (prob(75))
+		src.pixel_y = rand(0, 16)
+
+	return
+
+// Jaylor Rameau's turtleneck - EvilBrage
+/obj/item/clothing/under/syndicate/tacticool/fluff/jaylor_turtleneck
+	name = "borderworlds turtleneck"
+	desc = "A loose-fitting turtleneck, common among borderworld pilots and criminals. One criminal in particular is missing his, apparently."
+
+// Miracle Kifer's cargo jacket - Jboy2000000
+/obj/item/clothing/suit/storage/fluff/miracle_jacket
+	name = "cargo jacket"
+	desc = "A yellow and brown jacket similar in design to a cargo uniform."
+	icon = 'icons/obj/custom_items/miracle_jacket.dmi'
+	icon_state = "miracle_jacket_open"
+	contained_sprite = 1
+
+	verb/toggle()
+		set name = "Toggle Jacket Zipper"
+		set category = "Object"
+		set src in usr
+
+		if(!usr.canmove || usr.stat || usr.restrained())
+			return 0
+
+		switch(icon_state)
+			if("miracle_jacket_open")
+				icon_state = "miracle_jacket_closed"
+				usr << "You zip up \the [src]."
+			if("miracle_jacket_closed")
+				icon_state = "miracle_jacket_open"
+				usr << "You unzip \the [src]."
+
+			else
+				usr << "SierraKomodo broke a thing. Bug report time!"
+				return
+
+		usr.update_inv_wear_suit()

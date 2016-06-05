@@ -48,7 +48,7 @@ Stealthy and Inconspicuous Weapons;
 /obj/item/weapon/cartridge/syndicate:3:Detomatix PDA Cartridge;
 Whitespace:Seperator;
 Stealth and Camouflage Items;
-/obj/item/weapon/storage/box/syndie_kit/chameleon:3:Chameleon Kit;
+/obj/item/weapon/storage/box/syndie_kit/chameleon:6:Chameleon Kit;
 /obj/item/weapon/storage/box/syndie_kit/masks:1:Disguised Breathe Mask;
 /obj/item/weapon/storage/box/syndie_kit/masks_gas:2:Disguised Gasmask;
 /obj/item/clothing/under/chameleon:3:Chameleon Jumpsuit;
@@ -56,9 +56,9 @@ Stealth and Camouflage Items;
 /obj/item/weapon/card/id/syndicate:2:Agent ID card;
 /obj/item/clothing/mask/gas/voice:4:Voice Changer;
 /obj/item/device/chameleon:4:Chameleon-Projector;
+/obj/item/device/radiojammer:2:Radio Jammer;
 Whitespace:Seperator;
 Devices and Tools;
-/obj/item/shoe_cover:1:Silent Step Fabric;
 /obj/item/weapon/card/emag:3:Cryptographic Sequencer;
 /obj/item/weapon/storage/toolbox/syndicate:1:Fully Loaded Toolbox;
 /obj/item/weapon/storage/box/syndie_kit/space:3:Space Suit;
@@ -72,6 +72,7 @@ Devices and Tools;
 Whitespace:Seperator;
 Implants;
 /obj/item/weapon/storage/box/syndie_kit/imp_freedom:3:Freedom Implant;
+/obj/item/weapon/storage/box/syndie_kit/imp_adrenalin:3:Adrenalin Implant;
 /obj/item/weapon/storage/box/syndie_kit/imp_uplink:10:Uplink Implant (Contains 5 Telecrystals);
 /obj/item/weapon/storage/box/syndie_kit/imp_explosive:6:Explosive Implant (DANGER!);
 /obj/item/weapon/storage/box/syndie_kit/imp_compress:4:Compressed Matter Implant;Whitespace:Seperator;
@@ -115,7 +116,7 @@ Implants;
 
 
 ///post_setup()
-///Everyone should now be on the station and have their normal gear.  This is the place to give the special roles extra things
+///Everyone should now be on the ship and have their normal gear.  This is the place to give the special roles extra things
 /datum/game_mode/proc/post_setup()
 	spawn (ROUNDSTART_LOGOUT_REPORT_TIME)
 		display_roundstart_logout_report()
@@ -147,11 +148,12 @@ Implants;
 	var/surviving_total = 0
 	var/ghosts = 0
 	var/escaped_humans = 0
+	var/species_stats = list("Humans" = 0, "Unathi" = 0, "Tajaran" = 0, "Skrell" = 0, "Vaurca" = 0, "IPC" = 0, "Diona" = 0)
 	var/escaped_total = 0
 	var/escaped_on_pod_1 = 0
 	var/escaped_on_pod_2 = 0
 	var/escaped_on_pod_3 = 0
-	var/escaped_on_pod_4 = 0
+	var/escaped_on_pod_5 = 0
 	var/escaped_on_shuttle = 0
 
 	var/list/area/escape_locations = list(/area/shuttle/escape/centcom, /area/shuttle/escape_pod1/centcom, /area/shuttle/escape_pod2/centcom, /area/shuttle/escape_pod3/centcom, /area/shuttle/escape_pod4/centcom)
@@ -160,10 +162,30 @@ Implants;
 		if(M.client)
 			clients++
 			if(ishuman(M))
+				var/mob/living/carbon/human/H = M
 				if(!M.stat)
 					surviving_humans++
 					if(M.loc && M.loc.loc && M.loc.loc.type in escape_locations)
 						escaped_humans++
+					if (istype(H.species, /datum/species/machine))
+						var/datum/species/machine/machine = H.species
+						machine.update_tag(H, H.client)
+				if (H.species)
+					switch (H.species.name)
+						if ("Human")
+							species_stats["Human"]++
+						if ("Unathi")
+							species_stats["Unathi"]++
+						if ("Tajaran")
+							species_stats["Tajaran"]++
+						if ("Skrell")
+							species_stats["Skrell"]++
+						if ("Vaurca")
+							species_stats["Vaurca"]++
+						if ("Machine")
+							species_stats["IPC"]++
+						if ("Diona")
+							species_stats["Diona"]++
 			if(!M.stat)
 				surviving_total++
 				if(M.loc && M.loc.loc && M.loc.loc.type in escape_locations)
@@ -179,7 +201,7 @@ Implants;
 				if(M.loc && M.loc.loc && M.loc.loc.type == /area/shuttle/escape_pod3/centcom)
 					escaped_on_pod_3++
 				if(M.loc && M.loc.loc && M.loc.loc.type == /area/shuttle/escape_pod4/centcom)
-					escaped_on_pod_4++
+					escaped_on_pod_5++
 
 			if(isobserver(M))
 				ghosts++
@@ -190,6 +212,12 @@ Implants;
 		feedback_set("round_end_ghosts",ghosts)
 	if(surviving_humans > 0)
 		feedback_set("survived_human",surviving_humans)
+
+		var/species_stats_string = ""
+		for (var/species_name in species_stats)
+			species_stats_string += "[species_name]: [species_stats[species_name]], "
+
+		feedback_set_details("species_statistics", species_stats_string)
 	if(surviving_total > 0)
 		feedback_set("survived_total",surviving_total)
 	if(escaped_humans > 0)
@@ -204,8 +232,8 @@ Implants;
 		feedback_set("escaped_on_pod_2",escaped_on_pod_2)
 	if(escaped_on_pod_3 > 0)
 		feedback_set("escaped_on_pod_3",escaped_on_pod_3)
-	if(escaped_on_pod_4 > 0)
-		feedback_set("escaped_on_pod_4",escaped_on_pod_4)
+	if(escaped_on_pod_5 > 0)
+		feedback_set("escaped_on_pod_5",escaped_on_pod_5)
 
 	send2mainirc("A round of [src.name] has ended - [surviving_total] survivors, [ghosts] ghosts.")
 
@@ -256,7 +284,7 @@ Implants;
 				intercepttext += "Someone with the job of <b>[M.mind.assigned_role]</b> <br>"
 			else
 				intercepttext += "<b>[M.name]</b>, the <b>[M.mind.assigned_role]</b> <br>"
-/*
+
 	for (var/obj/machinery/computer/communications/comm in machines)
 		if (!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
 			var/obj/item/weapon/paper/intercept = new /obj/item/weapon/paper( comm.loc )
@@ -266,7 +294,7 @@ Implants;
 			comm.messagetitle.Add("Cent. Com. Status Summary")
 			comm.messagetext.Add(intercepttext)
 	world << sound('sound/AI/commandreport.ogg')
-*/
+
 /*	command_alert("Summary downloaded and printed out at all communications consoles.", "Enemy communication intercept. Security Level Elevated.")
 	for(var/mob/M in player_list)
 		if(!istype(M,/mob/new_player))

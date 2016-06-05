@@ -225,3 +225,202 @@
 
 /obj/item/organ/stack/vox
 	name = "vox cortical stack"
+
+/datum/organ/internal/machine
+	removed_type = /obj/item/organ/machine
+	robotic = 2
+
+/datum/organ/internal/machine/process()
+	return
+
+/obj/item/organ/machine
+	robotic = 2
+
+/datum/organ/internal/machine/radiator
+	name = "internal cooling unit"
+	parent_organ = "chest"
+	min_bruised_damage = 15
+	min_broken_damage = 40
+	removed_type = /obj/item/organ/machine/radiator
+	var/seized = 0
+
+/datum/organ/internal/machine/radiator/process()
+	if (seized && owner.internal_organs_by_name["diagnosis_unit"])
+		var/datum/organ/internal/machine/diagnosis_unit/diagnosis_unit = owner.internal_organs_by_name["diagnosis_unit"]
+		seized = diagnosis_unit.overload
+
+/datum/organ/internal/machine/radiator/is_broken()
+	if (seized)
+		return 1
+
+	..()
+
+/obj/item/organ/machine/radiator
+	name = "internal cooling unit"
+	icon_state = "radiator"
+	organ_tag = "radiator"
+	organ_type = /datum/organ/internal/machine/radiator
+
+/obj/item/organ/machine/radiator/exposed_to_the_world()
+	var/obj/item/robot_parts/robot_component/radiator/Radiator = new(src.loc)
+	if(organ_data.damage)
+		Radiator.brute = organ_data.damage
+	if (organ_data)
+		var/datum/organ/internal/machine/radiator/old_radiator = organ_data
+		if (old_radiator.seized)
+			Radiator.desc += "<font color='blue'>It looks seized.</font>"
+	del(src)
+	return Radiator
+
+/datum/organ/internal/machine/bladder
+	name = "chemical containment"
+	parent_organ = "groin"
+	removed_type = /obj/item/organ/machine/bladder
+
+/datum/organ/internal/machine/bladder/process()
+	if(status & ORGAN_CUT_AWAY)
+		return
+
+	if(is_bruised())
+		var/leakSmall = rand(1,5)
+		if(owner.reagents.total_volume > 0)
+			owner.reagents.remove_any(leakSmall)
+		if(owner.reagents.maximum_volume > 500)
+			owner.reagents.maximum_volume -= leakSmall
+
+	if(is_broken())
+		var/leakLarge = rand(25,50)
+		if(owner.reagents.total_volume > 0)
+			owner.reagents.remove_any(leakLarge)
+		if(owner.reagents.maximum_volume > 0)
+			if(owner.reagents.maximum_volume < leakLarge)
+				owner.reagents.maximum_volume = 0
+			else
+				owner.reagents.maximum_volume -= leakLarge
+
+	if(owner.reagents.reagent_list.len)
+		if(owner.reagents.has_reagent("sacid") || owner.reagents.has_reagent("pacid"))
+			take_damage(rand(0,2.5), 1)
+
+/obj/item/organ/machine/bladder
+	name = "chemical containment"
+	icon_state = "bladder"
+	organ_tag = "chemical containment"
+	organ_type = /datum/organ/internal/machine/bladder
+
+/obj/item/organ/machine/bladder/replaced(var/mob/living/carbon/human/target)
+	if(istype(target) && (target.species.flags & IS_SYNTHETIC))
+		if(target.reagents.maximum_volume < 1000)
+			target.reagents.maximum_volume = 1000
+
+	..()
+
+/obj/item/organ/machine/bladder/removed(var/mob/living/target, var/mob/living/user)
+	..()
+
+	if(istype(target, /mob/living/carbon/human))
+		var/mob/living/carbon/human/Machine = target
+		if(Machine.species.flags & IS_SYNTHETIC)
+			Machine.reagents.clear_reagents()
+			Machine.reagents.maximum_volume = 0
+
+/obj/item/organ/machine/bladder/exposed_to_the_world()
+	var/obj/item/robot_parts/robot_component/bladder/Bladder = new(src.loc)
+	if(organ_data.damage)
+		Bladder.brute = organ_data.damage
+	del(src)
+	return Bladder
+
+/datum/organ/internal/machine/diagnosis_unit
+	name = "diagnosis unit"
+	parent_organ = "head"
+	removed_type = /obj/item/organ/machine/diagnosis_unit
+	var/overload = 0
+
+/datum/organ/internal/machine/diagnosis_unit/process()
+	if (!overload)
+		return
+
+	if (owner.internal_organs_by_name["radiator"])
+		var/datum/organ/internal/machine/radiator/radiator = owner.internal_organs_by_name["radiator"]
+		radiator.seized = 1
+
+	var/list/pain_messages = list("ERROR: damage detected!", "System failure detected!", "Runtime errors present! System failure imminent!", "Software integrity compromised!", "Hardware malfunction detected!")
+	owner.custom_pain(pick(pain_messages), 1, 1)
+
+/obj/item/organ/machine/diagnosis_unit
+	name = "diagnosis unit"
+	icon_state = "diagnosis_unit"
+	organ_tag = "diagnosis unit"
+	organ_type = /datum/organ/internal/machine/diagnosis_unit
+
+/obj/item/organ/machine/diagnosis_unit/exposed_to_the_world()
+	var/obj/item/robot_parts/robot_component/diagnosis_unit/Diagnosis_unit = new(src.loc)
+	if(organ_data.damage)
+		Diagnosis_unit.brute = organ_data.damage
+	del(src)
+	return Diagnosis_unit
+
+/obj/item/organ/eyes/robot
+	name = "camera"
+	organ_tag = "eyes"
+	organ_type = /datum/organ/internal/eyes/robot
+	robotic = 2
+
+/obj/item/organ/eyes/robot/exposed_to_the_world()
+	var/obj/item/robot_parts/robot_component/camera/Eyes = new(src.loc)
+	if(organ_data.damage)
+		Eyes.brute = organ_data.damage
+	del(src)
+	return Eyes
+
+/datum/organ/internal/machine/ipc_tag
+	name = "IPC tag"
+	parent_organ = "head"
+	removed_type = /obj/item/organ/machine/ipc_tag
+
+/obj/item/organ/machine/ipc_tag
+	name = "IPC tag"
+	organ_tag = "ipc tag"
+	organ_type = /datum/organ/internal/machine/ipc_tag
+
+/obj/item/organ/machine/ipc_tag/removed(var/mob/living/carbon/human/target, var/mob/living/user)
+	..()
+
+	if (istype(target) && target.internal_organs_by_name["diagnosis unit"])
+		var/datum/organ/internal/machine/diagnosis_unit/diagnosis_unit = target.internal_organs_by_name["diagnosis unit"]
+		diagnosis_unit.overload = 1
+
+/obj/item/organ/machine/ipc_tag/exposed_to_the_world()
+	var/obj/item/robot_parts/robot_component/ipc_tag/tag = new(src.loc)
+	if (organ_data.damage)
+		tag.brute = organ_data.damage
+	del(src)
+	return tag
+
+/obj/item/organ/vaurca/neuralsocket
+    name = "neural socket"
+    organ_tag = "neural socket"
+    icon = 'icons/mob/alien_organs.dmi'
+    icon_state = "neural_socket"
+
+/obj/item/organ/vaurca/neuralsocket/removed()
+	return
+
+/obj/item/organ/vaurca/breathingapparatus
+    name = "breathing apparatus"
+    organ_tag = "breathing apparatus"
+    icon = 'icons/mob/alien_organs.dmi'
+    icon_state = "breathing_app"
+
+/obj/item/organ/vaurca/breathingapparatus/removed()
+	return
+
+/obj/item/organ/vaurca/tracheae
+    name = "tracheae"
+    organ_tag = "tracheae"
+    icon = 'icons/mob/alien_organs.dmi'
+    icon_state = "tracheae"
+
+/obj/item/organ/vaurca/tracheae/removed()
+	return

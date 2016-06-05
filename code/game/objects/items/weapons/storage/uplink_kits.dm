@@ -9,7 +9,6 @@
 				new /obj/item/clothing/shoes/syndigaloshes(src)
 				return
 
-			if ("stealth")
 			if("stealth")
 				new /obj/item/weapon/gun/energy/crossbow(src)
 				new /obj/item/weapon/pen/paralysis(src)
@@ -80,6 +79,16 @@
 	..()
 	var/obj/item/weapon/implanter/O = new(src)
 	O.imp = new /obj/item/weapon/implant/freedom(O)
+	O.update()
+	return
+
+/obj/item/weapon/storage/box/syndie_kit/imp_adrenalin
+	name = "boxed adrenalin implant (with injector)"
+
+/obj/item/weapon/storage/box/syndie_kit/imp_adrenalin/New()
+	..()
+	var/obj/item/weapon/implanter/O = new(src)
+	O.imp = new /obj/item/weapon/implant/adrenalin(O)
 	O.update()
 	return
 

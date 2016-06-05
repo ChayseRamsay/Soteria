@@ -30,8 +30,8 @@
 		src.emag = new /obj/item/toy/sword(src)
 		src.emag.name = "Placeholder Emag Item"
 		return
-
-
+		
+		
 /obj/item/weapon/robot_module/proc/respawn_consumable(var/mob/living/silicon/robot/R)
 
 	if(!stacktypes || !stacktypes.len) return
@@ -71,11 +71,11 @@
 	if (camera_network)
 		if(R.camera && "Robots" in R.camera.network)
 			R.camera.network.Add(camera_network)
-
+	
 
 /obj/item/weapon/robot_module/proc/add_sensor_modification(var/mob/living/silicon/robot/R)
 	R.sensor_mode=sensor_mode
-
+	
 
 /obj/item/weapon/robot_module/standard
 	name = "standard robot module"
@@ -231,10 +231,8 @@
 		src.modules += new /obj/item/device/flashlight(src)
 		src.modules += new /obj/item/device/flash(src)
 		src.modules += new /obj/item/borg/sight/meson(src)
-		src.emag = new /obj/item/borg/stun(src)
 		src.modules += new /obj/item/weapon/rcd/borg(src)
 		src.modules += new /obj/item/weapon/extinguisher(src)
-//		src.modules += new /obj/item/device/flashlight(src)
 		src.modules += new /obj/item/weapon/weldingtool/largetank(src)
 		src.modules += new /obj/item/weapon/screwdriver(src)
 		src.modules += new /obj/item/weapon/wrench(src)
@@ -244,7 +242,10 @@
 		src.modules += new /obj/item/device/t_scanner(src)
 		src.modules += new /obj/item/device/analyzer(src)
 		src.modules += new /obj/item/taperoll/engineering(src)
-
+		src.modules += new /obj/item/weapon/gripper(src)
+		
+		src.emag = new /obj/item/borg/stun(src)
+		
 		var/obj/item/stack/sheet/metal/cyborg/M = new /obj/item/stack/sheet/metal/cyborg(src)
 		M.amount = 50
 		src.modules += M
@@ -323,8 +324,8 @@
 
 /obj/item/weapon/robot_module/butler
 	name = "service robot module"
-	sprites = list( "Waitress" = "Service",
-					"Kent" = "toiletbot",
+	sprites = list( "Waitress" = "Service", 
+					"Kent" = "toiletbot", 
 					"Bro" = "Brobot",
 					"Rich" = "maximillion",
 					"Default" = "Service2")
@@ -368,8 +369,8 @@
 
 /obj/item/weapon/robot_module/clerical
 	name = "clerical robot module"
-	sprites = list( "Waitress" = "Service",
-					"Kent" = "toiletbot",
+	sprites = list( "Waitress" = "Service", 
+					"Kent" = "toiletbot", 
 					"Bro" = "Brobot",
 					"Rich" = "maximillion",
 					"Default" = "Service2")

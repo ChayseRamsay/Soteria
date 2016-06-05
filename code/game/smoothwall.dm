@@ -28,10 +28,10 @@
 		for(var/obj/machinery/shuttle/W in orange(src,1)) //stuff like engine and propulsion should merge with walls
 			if(abs(src.x-W.x)-abs(src.y-W.y))
 				junction |= get_dir(src,W)
-		for(var/obj/machinery/door/W in orange(src,1)) //doors should not result in diagonal walls, it just looks ugly. checking if area is shuttle so it won't merge with the station
+		for(var/obj/machinery/door/W in orange(src,1)) //doors should not result in diagonal walls, it just looks ugly. checking if area is shuttle so it won't merge with the ship
 			if((abs(src.x-W.x)-abs(src.y-W.y)) && (istype(W.loc.loc,/area/shuttle) || istype(W.loc.loc,/area/supply)))
 				junction |= get_dir(src,W)
-		for(var/obj/structure/grille/W in orange(src,1)) //same for grilles. checking if area is shuttle so it won't merge with the station
+		for(var/obj/structure/grille/W in orange(src,1)) //same for grilles. checking if area is shuttle so it won't merge with the ship
 			if((abs(src.x-W.x)-abs(src.y-W.y)) && (istype(W.loc.loc,/area/shuttle) || istype(W.loc.loc,/area/supply)))
 				junction |= get_dir(src,W)*/
 

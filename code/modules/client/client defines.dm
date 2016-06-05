@@ -7,6 +7,8 @@
 
 	var/last_message	= "" //Contains the last message sent by this client - used to protect against copy-paste spamming.
 	var/last_message_count = 0 //contins a number of how many times a message identical to last_message was sent.
+	var/last_message_time = 0 ////contins the last time a message was sent
+	var/last_message_timer  = 0 //contins a number of how quickly messages are sent
 
 		/////////
 		//OTHER//
@@ -44,5 +46,6 @@
 	var/player_age = "Requires database"	//So admins know why it isn't working - Used to determine how old the account is - in days.
 	var/related_accounts_ip = "Requires database"	//So admins know why it isn't working - Used to determine what other accounts previously logged in from this ip
 	var/related_accounts_cid = "Requires database"	//So admins know why it isn't working - Used to determine what other accounts previously logged in from this computer id
+	var/whitelist_status = 0						//Used to determine what whitelists the player has access to. Bitflag field.
 
 	preload_rsc = 0 // This is 0 so we can set it to an URL once the player logs in and have them download the resources from a different server.

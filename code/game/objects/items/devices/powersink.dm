@@ -1,4 +1,4 @@
-// Powersink - used to drain station power
+// Powersink - used to drain ship power
 
 /obj/item/device/powersink
 	desc = "A nulling power sink which drains energy from electrical systems."
@@ -42,7 +42,7 @@
 					return
 			else
 				if (mode == 2)
-					processing_objects.Remove(src) // Now the power sink actually stops draining the station's power if you unhook it. --NeoFite
+					processing_objects.Remove(src) // Now the power sink actually stops draining the ship's power if you unhook it. --NeoFite
 				anchored = 0
 				mode = 0
 				user << "You detach	the device from the cable."

@@ -252,7 +252,7 @@
 		values["signal_code"] = R.code
 
 
-	/*		Station Display (Mode: 42)			*/
+	/*		Ship Display (Mode: 42)			*/
 
 	if(mode==42)
 		values["message1"] = message1 ? message1 : "(none)"

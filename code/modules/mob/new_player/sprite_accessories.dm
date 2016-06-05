@@ -592,27 +592,27 @@
 /datum/sprite_accessory/hair
 	una_spines_long
 		name = "Long Unathi Spines"
-		icon_state = "unathi_longspines"
+		icon_state = "soghun_longspines"
 		species_allowed = list("Unathi")
 
 	una_spines_short
 		name = "Short Unathi Spines"
-		icon_state = "unathi_shortspines"
+		icon_state = "soghun_shortspines"
 		species_allowed = list("Unathi")
 
 	una_frills_long
 		name = "Long Unathi Frills"
-		icon_state = "unathi_longfrills"
+		icon_state = "soghun_longfrills"
 		species_allowed = list("Unathi")
 
 	una_frills_short
 		name = "Short Unathi Frills"
-		icon_state = "unathi_shortfrills"
+		icon_state = "soghun_shortfrills"
 		species_allowed = list("Unathi")
 
 	una_horns
 		name = "Unathi Horns"
-		icon_state = "unathi_horns"
+		icon_state = "soghun_horns"
 		species_allowed = list("Unathi")
 
 	skr_tentacle_m
@@ -709,6 +709,12 @@
 	taj_ears_messy
 		name = "Tajara Messy"
 		icon_state = "hair_messy"
+		species_allowed = list("Tajaran")
+
+	taj_ears_curls
+		name = "Tajara Curly"
+		icon_state = "hair_curly"
+		gender = FEMALE
 		species_allowed = list("Tajaran")
 
 	taj_ears_wife

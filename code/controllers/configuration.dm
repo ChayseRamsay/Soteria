@@ -87,8 +87,10 @@
 	var/banappeals
 	var/wikiurl
 	var/forumurl
-	var/Hypatiawikiurl
+	var/Soteriawikiurl
 	var/githuburl
+
+	var/whitelists_on_sql = 0
 
 	//Alert level description
 	var/alert_desc_green = "All threats to the ship have passed. Security may not have weapons visible, privacy laws are once again fully enforced."
@@ -158,6 +160,15 @@
 	var/list/admin_levels= list(2)					// Defines which Z-levels which are for admin functionality, for example including such areas as Central Command and the Syndicate Shuttle
 	var/list/contact_levels = list(1, 5)			// Defines which Z-levels which, for example, a Code Red announcement may affect
 	var/list/player_levels = list(1, 3, 4, 5, 6)	// Defines all Z-levels a character can typically reach
+
+	var/list/age_restrictions = list()				// Holds all of the age restrictions for jobs and antag roles in a single associated list
+
+	var/use_discord_bot = 0
+	var/discord_login = ""
+	var/discord_password = ""
+	var/discord_mention_everyone = 1
+	var/discord_admin_url = ""
+	var/discord_cciaa_url = ""
 
 /datum/configuration/New()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
@@ -351,8 +362,8 @@
 				if ("forumurl")
 					config.forumurl = value
 
-				if ("Hypatiawikiurl")
-					config.Hypatiawikiurl = value
+				if ("Soteriawikiurl")
+					config.Soteriawikiurl = value
 
 				if ("githuburl")
 					config.githuburl = value

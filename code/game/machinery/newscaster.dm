@@ -191,7 +191,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				dat+= "<BR><A href='?src=\ref[src];view=1'>View Feed Channels</A>"
 				dat+= "<BR><A href='?src=\ref[src];create_feed_story=1'>Submit new Feed story</A>"
 				dat+= "<BR><A href='?src=\ref[src];menu_paper=1'>Print newspaper</A>"
-				dat+= "<BR><A href='?src=\ref[src];setScreen=[22]'>NanoTrasen Station Directives</A>"
+				dat+= "<BR><A href='?src=\ref[src];setScreen=[22]'>NanoTrasen Ship Directives</A>"
 				dat+= "<BR><A href='?src=\ref[src];refresh=1'>Re-scan User</A>"
 				dat+= "<BR><BR><A href='?src=\ref[human_or_robot_user];mach_close=newscaster_main'>Exit</A>"
 				if(src.securityCaster)
@@ -205,7 +205,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 					dat+="<BR><A href='?src=\ref[src];menu_censor_channel=1'>Mark Feed Channel with Nanotrasen D-Notice</A>"
 				dat+="<BR><HR>The newscaster recognises you as: <FONT COLOR='green'>[src.scanned_user]</FONT>"
 			if(1)
-				dat+= "Station Feed Channels<HR>"
+				dat+= "Ship Feed Channels<HR>"
 				if( isemptylist(news_network.network_channels) )
 					dat+="<I>No active channels found...</I>"
 				else

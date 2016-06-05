@@ -1,6 +1,6 @@
 /*
 
-### This file contains a list of all the areas in your station. Format is as follows:
+### This file contains a list of all the areas in your ship. Format is as follows:
 
 /area/CATEGORY/OR/DESCRIPTOR/NAME 	(you can make as many subdivisions as you want)
 	name = "NICE NAME" 				(not required but makes things really nice)
@@ -9,7 +9,7 @@
 	requires_power = 0 				(defaults to 1)
 	music = "music/music.ogg"		(defaults to "music/music.ogg")
 
-NOTE: there are two lists of areas in the end of this file: centcom and station itself. Please maintain these lists valid. --rastaf0
+NOTE: there are two lists of areas in the end of this file: centcom and ship itself. Please maintain these lists valid. --rastaf0
 
 */
 
@@ -554,7 +554,7 @@ var/list/ghostteleportlocs = list()
 	icon_state = "north"
 
 /area/syndicate_station/arrivals
-	name = "\improper NSS Hypatia arrivals"
+	name = "\improper NSS Soteria arrivals"
 	icon_state = "north"
 
 /area/syndicate_station/transit

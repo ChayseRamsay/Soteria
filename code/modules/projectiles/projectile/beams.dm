@@ -100,15 +100,13 @@ var/list/beam_master = list()
 	icon_state = "xray"
 	damage = 30
 //	forcedodge = -1
-/obj/item/projectile/beam/xray/ERTrifle
-	damage = 30
+
 /obj/item/projectile/beam/xray/burst
 	name = "xray beam"
 	icon_state = "xray"
 //	damage = 15 this makes rapidlasers kill almost exactly as fast as the rifle, but since they do a tripleburst, armor is much more effective. plus. rng miss.
-	damage = 25
-/obj/item/projectile/beam/xray/burst/ERTsmg
-	damage = 25
+	damage = 25 //hence 25 damage.  slight advantage over regular lasers.  half-capacity for damage.  use for coolness. use laser cannons for powergame.
+
 /obj/item/projectile/beam/pulse
 	name = "pulse"
 	icon_state = "u_laser"
@@ -128,8 +126,8 @@ var/list/beam_master = list()
 /obj/item/projectile/beam/stun
 	name = "stun beam"
 	icon_state = "stun"
-	damage = 0
-	agony = 10
+	damage = 20
+	agony = 45
 
 /obj/item/projectile/beam/lastertag/blue
 	name = "lasertag beam"

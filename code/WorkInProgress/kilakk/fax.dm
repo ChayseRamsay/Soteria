@@ -1,6 +1,33 @@
 var/list/obj/machinery/faxmachine/allfaxes = list()
 var/list/alldepartments = list("Central Command")
 
+/datum/fax_repository
+	var/list/received_faxes = list()
+	var/list/sent_faxes = list()
+
+/datum/fax_repository/proc/add_fax(var/data, var/subject, var/sender, var/received = 1)
+	if (!data || !subject || !sender)
+		return
+
+	var/list/new_fax = list("data" = data, "subject" = subject, "sender" = sender)
+	switch (received)
+		if (1)
+			received_faxes.Add(list(new_fax))
+			return received_faxes.len
+		if (0)
+			sent_faxes.Add(list(new_fax))
+			return sent_faxes.len
+
+/datum/fax_repository/proc/get_fax(var/id, var/received = 1)
+	if (!id)
+		return
+
+	switch (received)
+		if (1)
+			return received_faxes[id]
+		if (0)
+			return sent_faxes[id]
+
 /obj/machinery/faxmachine
 	name = "fax machine"
 	icon = 'icons/obj/library.dmi'
@@ -179,6 +206,13 @@ var/list/alldepartments = list("Central Command")
 
 /proc/Centcomm_fax(var/sent, var/sentname, var/mob/Sender)
 
+	if (!ticker)
+		return
+
+	var/fax_id = ticker.fax_repository.add_fax(sent, sentname, Sender.name)
+
+	send_to_discord("cciaa_channel", "Received fax from [Sender], with ID [fax_id]. Subject: [sentname].")
+
 	for(var/client/C in admins)
 		var/msg = "\blue <b><font color='orange'>CENTCOMM FAX: </font>"
 		if(C.holder.rights & (R_ADMIN|R_FUN|R_MOD))
@@ -186,12 +220,12 @@ var/list/alldepartments = list("Central Command")
 		else
 			msg += "[key_name(Sender,0,1,0)]"
 
-		msg += " (<a href='?_src_=holder;CentcommFaxReply=\ref[Sender]'>RPLY</a>)</b>: Receiving '[sentname]' via secure connection ... <a href='?_src_=holder;CentcommFaxView=\ref[sent]'>view message</a>"
+		msg += " (<a href='?_src_=holder;CentcommFaxReply=1'>RPLY</a>)</b>: Receiving '[sentname]' via secure connection ... <a href='?_src_=holder;CentcommFaxView=[fax_id];CentcommFaxReceived=1'>view message</a>"
 
 		if(C.holder.rights & (R_ADMIN|R_DUTYOFF|R_FUN))
 			C << msg
 
-proc/SendFax(var/sent, var/sentname, var/mob/Sender, var/dpt)
+/proc/SendFax(var/sent, var/sentname, var/mob/Sender, var/dpt)
 
 	for(var/obj/machinery/faxmachine/F in allfaxes)
 		if( F.department == dpt )

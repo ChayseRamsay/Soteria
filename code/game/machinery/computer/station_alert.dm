@@ -1,7 +1,7 @@
 
 /obj/machinery/computer/station_alert
-	name = "Station Alert Computer"
-	desc = "Used to access the station's automated alert system."
+	name = "Ship Alert Computer"
+	desc = "Used to access the ship's automated alert system."
 	icon_state = "alert:0"
 	circuit = "/obj/item/weapon/circuitboard/stationalert"
 	var/alarms = list("Fire"=list(), "Atmosphere"=list(), "Power"=list())
@@ -25,7 +25,7 @@
 
 	interact(mob/user)
 		usr.set_machine(src)
-		var/dat = "<HEAD><TITLE>Current Station Alerts</TITLE><META HTTP-EQUIV='Refresh' CONTENT='10'></HEAD><BODY>\n"
+		var/dat = "<HEAD><TITLE>Current Ship Alerts</TITLE><META HTTP-EQUIV='Refresh' CONTENT='10'></HEAD><BODY>\n"
 		dat += "<A HREF='?src=\ref[user];mach_close=alerts'>Close</A><br><br>"
 		for (var/cat in src.alarms)
 			dat += text("<B>[]</B><BR>\n", cat)

@@ -204,8 +204,8 @@ var/global/datum/shuttle_controller/shuttle_controller
 		)
 
 	VS.announcer = "NSV Icarus"
-	VS.arrival_message = "Attention, Hypatia, we just tracked a small target bypassing our defensive perimeter. Can't fire on it without hitting the ship - you've got incoming visitors, like it or not."
-	VS.departure_message = "Your guests are pulling away, Hypatia - moving too fast for us to draw a bead on them. Looks like they're heading out of the system at a rapid clip."
+	VS.arrival_message = "Attention, Soteria, we just tracked a small target bypassing our defensive perimeter. Can't fire on it without hitting the ship - you've got incoming visitors, like it or not."
+	VS.departure_message = "Your guests are pulling away, Soteria - moving too fast for us to draw a bead on them. Looks like they're heading out of the system at a rapid clip."
 	VS.interim = locate(/area/vox_station/transit)
 
 	VS.warmup_time = 0
@@ -228,8 +228,8 @@ var/global/datum/shuttle_controller/shuttle_controller
 		)
 
 	MS.announcer = "NMV Manticore Control"
-	MS.arrival_message = "Attention, NSS Hypatia, Centauri 1-3 is inbound. NMV Manticore control out."
-	MS.departure_message = "Attention, NSS Hypatia. Centauri 1-3 is departing. Have a good shift."
+	MS.arrival_message = "Attention, NSS Soteria, Centauri 1-3 is inbound. NMV Manticore control out."
+	MS.departure_message = "Attention, NSS Soteria. Centauri 1-3 is departing. Have a good shift."
 	MS.interim = locate(/area/syndicate_station/transit)
 
 	MS.warmup_time = 0

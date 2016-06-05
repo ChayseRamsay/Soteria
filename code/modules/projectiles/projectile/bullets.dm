@@ -33,7 +33,7 @@
 	weaken = 5
 
 /obj/item/projectile/bullet/midbullet2
-	damage = 20
+	damage = 25
 
 /obj/item/projectile/bullet/incendiary
 	icon_state= "fireball"
@@ -84,18 +84,7 @@
 
 /obj/item/projectile/bullet/a762
 	damage = 25
-/obj/item/projectile/bullet/a65m55
-	damage = 23
-/obj/item/projectile/bullet/a40
-	damage = 30
-	stun = 5
-	weaken = 5
-	stutter = 10
-/obj/item/projectile/bullet/a127
-	damage = 40
-	stun = 5
-	weaken = 5
-	stutter = 10
+
 /obj/item/projectile/bullet/chameleon
 	damage = 1 // stop trying to murderbone with a fake gun dumbass!!!
 	embed = 0 // nope

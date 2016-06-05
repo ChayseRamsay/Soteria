@@ -247,7 +247,7 @@
 	return ..()
 
 /*/obj/item/weapon/syndicate_uplink
-	name = "station bounced radio"
+	name = "ship bounced radio"
 	desc = "Remain silent about this..."
 	icon = 'icons/obj/radio.dmi'
 	icon_state = "radio"

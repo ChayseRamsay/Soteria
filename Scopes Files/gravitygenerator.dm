@@ -471,8 +471,8 @@ var/list/gravity_field_generators = list() // We will keep track of this by addi
 			gravity_field_generators["[T.z]"] -= src
 
 
-//because the whole movement system needs changing, this hack will work for the main ship
-//Not counting the outposts as part of the ship
+//because the whole movement system needs changing, this hack will work for the main station
+//Not counting the outposts as part of the station
 /obj/machinery/gravity_field_generator/main/proc/get_area_type(var/area/A = get_area())
 	if (A.name == "Space")
 		return AREA_SPACE

@@ -36,7 +36,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/lock_code = "" // Lockcode to unlock uplink
 	var/honkamt = 0 //How many honks left when infected with honk.exe
 	var/mimeamt = 0 //How many silence left when infected with mime.exe
-	var/note = "Congratulations, your station has chosen the Thinktronic 5230 Personal Data Assistant!" //Current note in the notepad function
+	var/note = "Congratulations, your ship has chosen the Thinktronic 5230 Personal Data Assistant!" //Current note in the notepad function
 	var/notehtml = ""
 	var/cart = "" //A place to stick cartridge menu information
 	var/detonate = 1 // Can the PDA be blown up?
@@ -170,7 +170,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 /obj/item/device/pda/librarian
 	icon_state = "pda-libb"
 	desc = "A portable microcomputer by Thinktronic Systems, LTD. This is model is a WGW-11 series e-reader."
-	note = "Congratulations, your station has chosen the Thinktronic 5290 WGW-11 Series E-reader and Personal Data Assistant!"
+	note = "Congratulations, your ship has chosen the Thinktronic 5290 WGW-11 Series E-reader and Personal Data Assistant!"
 	silent = 1 //Quiet in the library!
 
 /obj/item/device/pda/clear
@@ -736,7 +736,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				ui.close()
 				return 0
 
-//SQL/Hypatia FUNCTIONS==================================
+//SQL/AURORA FUNCTIONS==================================
 
 		if("View Directive")
 			queryid = sanitizeSQL(href_list["queryid"])
@@ -916,6 +916,21 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		message = "\red" + message
 		M.show_message(message, 1)
 
+/obj/item/device/pda/verb/verb_reset_pda()
+	set category = "Object"
+	set name = "Reset PDA"
+	set src in usr
+
+	if(issilicon(usr))
+		return
+
+	if(can_use(usr))
+		mode = 0
+		nanomanager.update_uis(src)
+		usr << "<span class='notice'>You press the reset button on \the [src].</span>"
+	else
+		usr << "<span class='notice'>You cannot do this while restrained.</span>"
+
 /obj/item/device/pda/proc/remove_id()
 	if (id)
 		if (ismob(loc))
@@ -949,11 +964,14 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	//var/telecomms_intact = telecomms_process(P.owner, owner, t)
 	var/obj/machinery/message_server/useMS = null
 	if(message_servers)
-		for (var/obj/machinery/message_server/MS in message_servers)
-		//PDAs are now dependent on the Message Server.
-			if(MS.active)
-				useMS = MS
-				break
+		finding_server:
+			for (var/obj/machinery/message_server/MS in message_servers)
+			//PDAs are now dependent on the Message Server.
+				if(MS.active)
+					if (within_jamming_range(MS) && prob(75))
+						continue finding_server
+					useMS = MS
+					break
 
 	var/datum/signal/signal = src.telecomms_process()
 
@@ -964,11 +982,15 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			var/turf/pos = get_turf(P)
 			if(pos.z in signal.data["level"])
 				useTC = 2
+				if(within_jamming_range(P)) //Jamming the recipient
+					useTC = 1
 				//Let's make this barely readable
 				if(signal.data["compression"] > 0)
 					t = Gibberish(t, signal.data["compression"] + 50)
 
-	if(useMS && useTC) // only send the message if it's stable
+	var/isjammed = within_jamming_range(src)
+
+	if(useMS && useTC && !isjammed) // only send the message if it's stable
 		if(useTC != 2) // Does our recipient have a broadcaster on their level?
 			U << "ERROR: Cannot reach recipient."
 			return

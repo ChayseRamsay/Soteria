@@ -31,8 +31,6 @@
 		if(client.prefs.muted & MUTE_IC)
 			src << "You cannot send IC messages (muted)."
 			return
-		if (src.client.handle_spam_prevention(message,MUTE_IC))
-			return
 
 	message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
 
@@ -101,16 +99,19 @@
 		src << "\red Your radio isn't functional at this time."
 		return
 
+	var/langName = "default"
+	if(speaking && speaking.name)
+		langName = speaking.name
 	switch(message_mode)
 		if("department")
 			switch(bot_type)
 				if(IS_AI)
 					return AI.holopad_talk(message)
 				if(IS_ROBOT)
-					log_say("[key_name(src)] : [message]")
+					log_say("[key_name(src)] :([message_mode]/[langName]) [message]")
 					R.radio.talk_into(src,message,message_mode,verb,speaking)
 				if(IS_PAI)
-					log_say("[key_name(src)] : [message]")
+					log_say("[key_name(src)] :([message_mode]/[langName]) [message]")
 					P.radio.talk_into(src,message,message_mode,verb,speaking)
 			return 1
 
@@ -122,13 +123,13 @@
 						src << "\red System Error - Transceiver Disabled"
 						return
 					else
-						log_say("[key_name(src)] : [message]")
+						log_say("[key_name(src)] :(General/[langName]) [message]")
 						AI.aiRadio.talk_into(src,message,null,verb,speaking)
 				if(IS_ROBOT)
-					log_say("[key_name(src)] : [message]")
+					log_say("[key_name(src)] :(General/[langName]) [message]")
 					R.radio.talk_into(src,message,null,verb,speaking)
 				if(IS_PAI)
-					log_say("[key_name(src)] : [message]")
+					log_say("[key_name(src)] :(General/[langName]) [message]")
 					P.radio.talk_into(src,message,null,verb,speaking)
 			return 1
 
@@ -140,13 +141,13 @@
 							src << "\red System Error - Transceiver Disabled"
 							return
 						else
-							log_say("[key_name(src)] : [message]")
+							log_say("[key_name(src)] :([message_mode]/[langName]) [message]")
 							AI.aiRadio.talk_into(src,message,message_mode,verb,speaking)
 					if(IS_ROBOT)
-						log_say("[key_name(src)] : [message]")
+						log_say("[key_name(src)] :([message_mode]/[langName]) [message]")
 						R.radio.talk_into(src,message,message_mode,verb,speaking)
 					if(IS_PAI)
-						log_say("[key_name(src)] : [message]")
+						log_say("[key_name(src)] :([message_mode]/[langName]) [message]")
 						P.radio.talk_into(src,message,message_mode,verb,speaking)
 				return 1
 
@@ -154,9 +155,6 @@
 
 //For holopads only. Usable by AI.
 /mob/living/silicon/ai/proc/holopad_talk(var/message)
-
-	log_say("[key_name(src)] : [message]")
-
 	message = trim(message)
 
 	if (!message)
@@ -164,6 +162,9 @@
 
 	var/obj/machinery/hologram/holopad/T = src.holo
 	if(T && T.hologram && T.master == src)//If there is a hologram and its master is the user.
+
+		log_say("[key_name(src)] :(Holopad) [message]") //Log here to get holopad location
+
 		var/verb = say_quote(message)
 
 		//Human-like, sorta, heard by those who understand humans.
