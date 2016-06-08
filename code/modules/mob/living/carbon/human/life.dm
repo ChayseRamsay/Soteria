@@ -32,7 +32,6 @@
 	var/prev_gender = null // Debug for plural genders
 	var/temperature_alert = 0
 	var/in_stasis = 0
-	var/holdbreath = 0
 
 
 /mob/living/carbon/human/Life()
@@ -368,26 +367,7 @@
 				var/obj/location_as_object = loc
 				location_as_object.handle_internal_lifeform(src, 0)
 		else
-			if(holdbreath)//Are you holding your breath?
-				if(stat == CONSCIOUS) //Gotta be consious to hold your breath.
-					src.adjustOxyLoss(HUMAN_MAX_OXYLOSS * 2) //You slowly suffocate while holding your breath. Twice as fast as if you were not breathing
-					oxygen_alert = max(oxygen_alert, 1) //Visual alert shows while you are holding your breath!
-					var/oxymessage = ""
-					if(oxyloss < 25)
-						oxymessage = "\blue You easily hold your breath!"
-					else if(oxyloss > 24 && oxyloss < 50)
-						oxymessage = "\red Your lungs are starting to ache!"
-					else if(oxyloss > 49 && oxyloss < 75)
-						oxymessage = "\red Your vision swims as your lungs scream for air!"
-					else
-						src << "\red You lose consiousness"
-						stat = UNCONSCIOUS
-						return
-					src << oxymessage
-					return
-				else
-					oxygen_alert = 0
-					holdbreath = 0
+			//First, check for air from internal atmosphere (using an air tank and mask generally)
 			breath = get_breath_from_internal(BREATH_VOLUME) // Super hacky -- TLE
 			//breath = get_breath_from_internal(0.5) // Manually setting to old BREATH_VOLUME amount -- TLE
 
@@ -499,6 +479,15 @@
 			var/datum/organ/internal/lungs/L = internal_organs_by_name["lungs"]
 			if(!L)
 				safe_pressure_min = INFINITY //No lungs, how are you breathing?
+			else if(L.is_broken())
+				safe_pressure_min *= 1.5
+			else if(L.is_bruised())
+				safe_pressure_min *= 1.25
+
+		if(species.has_organ["breathing apparatus"])
+			var/datum/organ/internal/vaurca/breathingapparatus/L = internal_organs_by_name["breathing apparatus"]
+			if(!L)
+				safe_pressure_min = INFINITY //No wannabe-lungs, how are you breathing? FOR VAURCA
 			else if(L.is_broken())
 				safe_pressure_min *= 1.5
 			else if(L.is_bruised())
@@ -821,7 +810,19 @@
 
 	proc/stabilize_body_temperature()
 		if (species.flags & IS_SYNTHETIC)
-			bodytemperature += species.synth_temp_gain		//just keep putting out heat.
+			var/temperatureModifier = 0
+			if(species.has_organ["radiator"])
+				if(internal_organs_by_name["radiator"])
+					var/datum/organ/internal/Radiator = internal_organs_by_name["radiator"]
+					if(Radiator.is_broken())
+						temperatureModifier = 25
+						if(bodytemperature > 450 && prob(10))
+							apply_damage(rand(1, 5), BURN)
+					else if(Radiator.is_bruised())
+						temperatureModifier = 18
+				else
+					temperatureModifier = 25
+			bodytemperature += species.synth_temp_gain + temperatureModifier	//just keep putting out heat.
 			return
 
 		var/body_temperature_difference = species.body_temperature - bodytemperature
@@ -1131,7 +1132,6 @@
 		return //TODO: DEFERRED
 
 	proc/handle_regular_status_updates()
-
 		if(status_flags & GODMODE)	return 0
 
 		if(stat == DEAD)	//DEAD. BROWN BREAD. SWIMMING WITH THE SPESS CARP
@@ -1144,7 +1144,7 @@
 				handle_organs()	//Optimized.
 				handle_blood()
 
-			if(health <= config.health_threshold_dead || (species.has_organ["brain"] && !has_brain()))
+			if(health <= config.health_threshold_dead || (species.has_organ["brain"] && !has_brain() && !isonlifesupport()))
 				death()
 				blinded = 1
 				silent = 0
@@ -1407,6 +1407,9 @@
 				see_in_dark = 8
 				if(!druggy)		see_invisible = SEE_INVISIBLE_OBSERVER_NOLIGHTING
 
+			if(species.flags & IS_BUG) //Vaurca nightvision 29/12/15
+				see_in_dark = 8
+
 			if(seer==1)
 				var/obj/effect/rune/R = locate() in loc
 				if(R && R.word1 == cultwords["see"] && R.word2 == cultwords["hell"] && R.word3 == cultwords["join"])
@@ -1452,15 +1455,29 @@
 						if(1)	healths.icon_state = "health6"
 						if(2)	healths.icon_state = "health7"
 						else
-							//switch(health - halloss)
-							switch(100 - ((species && species.flags & NO_PAIN & !IS_SYNTHETIC) ? 0 : traumatic_shock))
-								if(100 to INFINITY)		healths.icon_state = "health0"
-								if(80 to 100)			healths.icon_state = "health1"
-								if(60 to 80)			healths.icon_state = "health2"
-								if(40 to 60)			healths.icon_state = "health3"
-								if(20 to 40)			healths.icon_state = "health4"
-								if(0 to 20)				healths.icon_state = "health5"
-								else					healths.icon_state = "health6"
+							var/numb = 0
+							if (species.has_organ["diagnosis unit"])
+								if (internal_organs_by_name["diagnosis unit"])
+									var/datum/organ/internal/machine/Diagnosis_unit = internal_organs_by_name["diagnosis unit"]
+									if (Diagnosis_unit.is_broken())
+										numb = 1
+									else if (Diagnosis_unit.is_bruised() && prob(35))
+										numb = 1
+								else
+									numb = 1
+
+							if (numb)
+								healths.icon_state = "health_numb"
+							else
+								//switch(health - halloss)
+								switch(100 - ((species && species.flags & NO_PAIN & !IS_SYNTHETIC) ? 0 : traumatic_shock))
+									if(100 to INFINITY)		healths.icon_state = "health0"
+									if(80 to 100)			healths.icon_state = "health1"
+									if(60 to 80)			healths.icon_state = "health2"
+									if(40 to 60)			healths.icon_state = "health3"
+									if(20 to 40)			healths.icon_state = "health4"
+									if(0 to 20)				healths.icon_state = "health5"
+									else					healths.icon_state = "health6"
 
 			if(nutrition_icon)
 				switch(nutrition)
@@ -1503,7 +1520,20 @@
 						else					bodytemp.icon_state = "temp-4"
 				else
 					var/temp_step
-					if (bodytemperature >= species.body_temperature)
+					var/numb = 0
+					if (species.has_organ["diagnosis unit"])
+						if(internal_organs_by_name["diagnosis unit"])
+							var/datum/organ/internal/machine/Diagnosis_unit = internal_organs_by_name["diagnosis unit"]
+							if (Diagnosis_unit.is_broken())
+								numb = 1
+							else if (Diagnosis_unit.is_bruised() && prob(35))
+								numb = 1
+						else numb = 1
+
+					if (numb)
+						bodytemp.icon_state = "temp_numb"
+
+					else if (bodytemperature >= species.body_temperature)
 						temp_step = (species.heat_level_1 - species.body_temperature)/4
 
 						if (bodytemperature >= species.heat_level_1)
@@ -1789,13 +1819,6 @@
 			holder2.icon_state = "hudxeno"
 		else if(foundVirus)
 			holder.icon_state = "hudill"
-		else if(has_brain_worms())
-			var/mob/living/simple_animal/borer/B = has_brain_worms()
-			if(B.controlling)
-				holder.icon_state = "hudbrainworm"
-			else
-				holder.icon_state = "hudhealthy"
-			holder2.icon_state = "hudbrainworm"
 		else
 			holder.icon_state = "hudhealthy"
 			if(virus2.len)

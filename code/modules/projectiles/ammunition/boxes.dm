@@ -88,6 +88,7 @@
 
 /obj/item/ammo_magazine/mc9mm/empty
 	max_ammo = 0
+
 /obj/item/ammo_magazine/c9mm
 	name = "Ammunition Box (9mm)"
 	icon_state = "9mm"

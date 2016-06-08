@@ -27,10 +27,10 @@
 	set name = "Soteria Wiki"
 	set desc = "Visit our wiki, where our custom information and guides are found, as well as our lore!"
 	set hidden = 1
-	if( config.Hypatiawikiurl )
+	if( config.Soteriawikiurl )
 		if(alert("This will open the soteria wiki in your browser. Are you sure?",,"Yes","No")=="No")
 			return
-		src << link(config.Hypatiawikiurl)
+		src << link(config.Soteriawikiurl)
 	else
 		src << "\red The URL for the soteria wiki is not set in the server configuration."
 	return

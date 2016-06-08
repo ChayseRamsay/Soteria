@@ -242,7 +242,7 @@
 /obj/machinery/telecomms/relay/Options_Menu()
 	var/dat = ""
 	if(src.z == TELECOMM_Z)
-		dat += "<br>Signal Locked to Station: <A href='?src=\ref[src];change_listening=1'>[listening_level == STATION_Z ? "TRUE" : "FALSE"]</a>"
+		dat += "<br>Signal Locked to Ship: <A href='?src=\ref[src];change_listening=1'>[listening_level == STATION_Z ? "TRUE" : "FALSE"]</a>"
 	dat += "<br>Broadcasting: <A href='?src=\ref[src];broadcast=1'>[broadcasting ? "YES" : "NO"]</a>"
 	dat += "<br>Receiving:    <A href='?src=\ref[src];receive=1'>[receiving ? "YES" : "NO"]</a>"
 	return dat
@@ -262,7 +262,7 @@
 		if(result)
 			temp = "<font color = #666633>-% [src]'s signal has been successfully changed.</font color>"
 		else
-			temp = "<font color = #666633>-% [src] could not lock it's signal onto the station. Two broadcasters or receivers required.</font color>"
+			temp = "<font color = #666633>-% [src] could not lock it's signal onto the ship. Two broadcasters or receivers required.</font color>"
 
 // BUS
 

@@ -22,10 +22,3 @@
 	else
 		step(user.pulling, get_dir(user.pulling.loc, src))
 	return
-
-/turf/unsimulated/floor/grass
-	name = "Grass patch"
-	icon_state = "grass1"
-
-	New()
-		icon_state = "grass[pick("1","2","3","4")]"

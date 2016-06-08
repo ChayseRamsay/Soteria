@@ -169,14 +169,14 @@
 	icon_state = "mine_headset"
 	item_state = "headset"
 	keyslot2 = new /obj/item/device/encryptionkey/headset_mine
-*/
+
 /obj/item/device/radio/headset/heads/qm
 	name = "quartermaster's headset"
-	desc = "The headset of the man who control your toiletpaper supply. To access the supply channel, use :u. For command, use :c."
+	desc = "The headset of the man who control your toiletpaper supply. To access the cargo channel, use :q. For mining, use :d."
 	icon_state = "cargo_headset"
 	item_state = "headset"
 	keyslot2 = new /obj/item/device/encryptionkey/heads/qm
-
+*/
 /obj/item/device/radio/headset/headset_cargo
 	name = "supply radio headset"
 	desc = "A headset used by the QM and his slaves. To access the supply channel, use :u."

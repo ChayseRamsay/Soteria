@@ -757,6 +757,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 			stat(null, "Round Time: [round(world.time / 36000)]:[(world.time / 600 % 60) < 10 ? add_zero(world.time / 600 % 60, 1) : world.time / 600 % 60]")
 			if(round(world.time / 36000) >= 2)
 				stat(null, "Last Vote: [last_vote_time_game]")
+			stat(null, "The Server Is [world.visibility ? "Public" : "Hidden"].")
 
 	if(listed_turf && client)
 		if(!TurfAdjacent(listed_turf))
@@ -1102,7 +1103,6 @@ mob/proc/yank_out_object()
 
 	return 0
 
-
 proc/add_logs(mob/target, mob/user, what_done, var/object=null, var/addition=null, var/admin=1) //Victim : Attacker : what they did : what they did it with : extra notes
 	var/list/ignore=list("shaked","CPRed","grabbed","punched")
 	if(!user)
@@ -1126,4 +1126,3 @@ proc/add_logs(mob/target, mob/user, what_done, var/object=null, var/addition=nul
 				if(G.can_reenter_corpse || even_if_they_cant_reenter)
 					return G
 				break
-

@@ -58,9 +58,9 @@
 	var/num_admins_online = 0
 	if(holder)
 		for(var/client/C in admins)
-			if(C.holder.fakekey && !(holder.rights & (R_ADMIN|R_DONOR)))
+			if(C.holder.fakekey && !(holder.rights & (R_ADMIN|R_MOD)))
 				continue
-			if(C.holder.rights & (R_ADMIN|R_DONOR))
+			if(C.holder.rights & R_ADMIN)
 				msg += "\t[C] is a [C.holder.rank]"
 
 				if(C.holder.fakekey)

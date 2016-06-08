@@ -11,19 +11,19 @@
 		if(client.prefs.muted & MUTE_IC)
 			src << "\red You cannot speak in IC (muted)."
 			return
-		if (src.client.handle_spam_prevention(message,MUTE_IC))
-			return
 
 	if(istype(src.loc,/mob/living/simple_animal/borer))
 
 		message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
 		if (!message)
 			return
-		log_say("[key_name(src)] : [message]")
+
+		var/mob/living/simple_animal/borer/B = src.loc
+		log_say("[key_name(src)] :(in key_name(B.host.name)) [message]")
+
 		if (stat == 2)
 			return say_dead(message)
 
-		var/mob/living/simple_animal/borer/B = src.loc
 		src << "You whisper silently, \"[message]\""
 		B.host << "The captive mind of [src] whispers, \"[message]\""
 
@@ -132,8 +132,6 @@
 	if (src.client)
 		if(client.prefs.muted & MUTE_IC)
 			src << "\red You cannot speak in IC (muted)."
-			return
-		if (src.client.handle_spam_prevention(message,MUTE_IC))
 			return
 
 	if (copytext(message, 1, 2) == "*")

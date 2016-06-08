@@ -407,14 +407,14 @@ datum/design/onehuman_module
 	materials = list("$glass" = 2000, "sacid" = 20, "$diamond" = 100)
 	build_path = "/obj/item/weapon/aiModule/oneHuman"
 
-datum/design/protectstation_module
+datum/design/protectship_module
 	name = "Module Design (Protectship)"
 	desc = "Allows for the construction of a Protectship AI Module."
-	id = "protectstation_module"
+	id = "protectship_module"
 	req_tech = list("programming" = 3, "materials" = 6)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20, "$gold" = 100)
-	build_path = "/obj/item/weapon/aiModule/protectStation"
+	build_path = "/obj/item/weapon/aiModule/protectship"
 
 datum/design/notele_module
 	name = "Module Design (TeleporterOffline Module)"
@@ -1295,6 +1295,23 @@ datum/design/mechfab
 	materials = list("$glass" = 2000, "sacid" = 20)
 	build_path = "/obj/item/weapon/circuitboard/mechfab"
 
+datum/design/optable
+	name = "Operating Table"
+	desc = "The circuit board for an Operating Table"
+	id = "optable"
+	req_tech = list("programming" = 1, "biotech" = 2)
+	build_type = IMPRINTER
+	materials = list("$glass" = 2000, "sacid" = 20)
+	build_path = "/obj/item/weapon/circuitboard/optable"
+
+datum/design/optable_lifesupport
+	name = "Life Support Enabled Operating Table"
+	desc = "The circuit board for an advanced Operating Table"
+	id = "adv_optable"
+	req_tech = list("programming" = 3, "biotech" = 4)
+	build_type = IMPRINTER
+	materials = list("$glass" = 2000, "sacid" = 20)
+	build_path = "/obj/item/weapon/circuitboard/optable_lifesupport"
 
 /////////////////////////////////////////
 ////////////Power Stuff//////////////////
@@ -1779,7 +1796,7 @@ datum/design/aprotopistol
 	build_path = "/obj/item/weapon/gun/energy/laser/modular/pistol/advanced"
 	locked = 1
 	category = "Weapons"
-/*This is all the station gets for producable force gloves. It's a high-risk item and thus considered contraband
+/*This is all the ship gets for producable force gloves. It's a high-risk item and thus considered contraband
 outside of RnD without paperwork with the RD's stamp on it. */
 datum/design/forcegloves
  	name = "Force Gloves"
@@ -1966,6 +1983,7 @@ datum/design/security_glasses //added to list 6/4/15
 	req_tech = list("magnets" = 5, "combat" = 2)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50, "$gold" = 50, "$silver" = 50)
+	build_path = "/obj/item/clothing/glasses/sunglasses/sechud"
 	category = "Information Technology"
 
 /////////////////////////////////////////

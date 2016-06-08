@@ -6,11 +6,11 @@
 	desc = "All slimy and yuck."
 	icon = 'icons/mob/alien.dmi'
 	icon_state = "larva0_dead"
-	var/mob/living/carbon/human/affected_mob
+	var/mob/living/affected_mob
 	var/stage = 0
 
 /obj/item/alien_embryo/New()
-	if(istype(loc, /mob/living/carbon/human))
+	if(istype(loc, /mob/living))
 		affected_mob = loc
 		processing_objects.Add(src)
 		spawn(0)
@@ -71,7 +71,7 @@
 			if(prob(50))
 				AttemptGrow()
 
-/obj/item/alien_embryo/proc/AttemptGrow()
+/obj/item/alien_embryo/proc/AttemptGrow(var/gib_on_success = 1)
 	var/list/candidates = get_alien_candidates()
 	var/picked = null
 
@@ -93,15 +93,13 @@
 	else
 		affected_mob.overlays += image('icons/mob/alien.dmi', loc = affected_mob, icon_state = "burst_stand")
 	spawn(6)
-		var/organ_name = "chest"
-		var/datum/organ/external/E = affected_mob.get_organ(organ_name)
-		var/datum/organ/internal/heart/heart = E.internal_organs["heart"]
-		heart.damage = 100
-		E.fracture()
-		E.take_damage(20, 0, 0)
 		var/mob/living/carbon/alien/larva/new_xeno = new(affected_mob.loc)
 		new_xeno.key = picked
 		new_xeno << sound('sound/voice/hiss5.ogg',0,0,0,100)	//To get the player's attention
+		if(gib_on_success)
+			affected_mob.gib()
+		del(src)
+
 /*----------------------------------------
 Proc: RefreshInfectionImage()
 Des: Removes all infection images from aliens and places an infection image on all infected mobs for aliens.

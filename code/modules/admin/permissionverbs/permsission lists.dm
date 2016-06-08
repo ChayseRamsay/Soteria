@@ -52,7 +52,6 @@ var/list/admin_verbs_admin = list(
 	/client/proc/cmd_admin_unwind,
 	/client/proc/cmd_admin_wind,
 	/client/proc/cmd_admin_world_narrate,	/*sends text to all players with no padding*/
-	/client/proc/cmd_banhammer,			//BANHAMMER!!!!!! --Numbers
 	/client/proc/cmd_duty_say,
 	/client/proc/cmd_mentor_check_new_players,
 	/client/proc/cmd_mod_say,
@@ -88,8 +87,11 @@ var/list/admin_verbs_admin = list(
 	/client/proc/toggledrones,
 	/client/proc/toggleprayers,
 	/client/proc/toggle_view_range,		/*changes how far we can see*/
+	/client/proc/toggle_visibily,
 	/client/proc/secrets,
-	/client/proc/set_ooc
+	/client/proc/set_ooc,
+	/client/proc/send_admin_fax,
+	/client/proc/check_fax_history
 )
 
 var/list/admin_verbs_ban = list(
@@ -145,7 +147,9 @@ var/list/admin_verbs_fun = list(
 	/client/proc/player_panel,
 	/client/proc/secrets,
 	/client/proc/send_space_ninja,
-	/client/proc/toggle_view_range
+	/client/proc/toggle_view_range,
+	/client/proc/send_admin_fax,
+	/client/proc/check_fax_history
 	)
 
 var/list/admin_verbs_dev = list(
@@ -207,7 +211,8 @@ var/list/admin_verbs_server = list(
 	/client/proc/Set_Holiday,
 	/client/proc/ToRban,
 	/client/proc/toggle_log_hrefs,
-	/client/proc/toggle_random_events
+	/client/proc/toggle_random_events,
+	/client/proc/toggle_visibily
 	)
 
 var/list/admin_verbs_debug = list(
@@ -282,13 +287,7 @@ var/list/admin_verbs_mod = list(
 	/client/proc/toggledebuglogs,
 	/client/proc/toggleprayers
 )
-var/list/admin_verbs_donor = list(
-	/datum/admins/proc/view_txt_log,	/*shows the server log (diary) for today*/
-	/datum/admins/proc/view_atk_log,	/*shows the server combat-log, doesn't do anything presently*/
-	/client/proc/cmd_mod_say,
-	/client/proc/dsay,
-	/client/proc/admin_ghost
-)
+
 //verbs which can be hidden - needs work
 var/list/admin_verbs_hideable = list(
 	/datum/admins/proc/access_news_network,
@@ -408,7 +407,9 @@ var/list/admin_verbs_duty = list(
 	/client/proc/cmd_admin_create_centcom_report,
 	/client/proc/cmd_duty_say,
 	/client/proc/returntobody,
-	/client/proc/view_duty_log
+	/client/proc/view_duty_log,
+	/client/proc/send_admin_fax,
+	/client/proc/check_fax_history
 )
 
 /client/proc/add_admin_verbs()
@@ -428,5 +429,4 @@ var/list/admin_verbs_duty = list(
 		if(holder.rights & R_SPAWN)			verbs += admin_verbs_spawn
 		if(holder.rights & R_MOD)			verbs += admin_verbs_mod
 		if(holder.rights & R_DEV)			verbs += admin_verbs_dev
-		if(holder.rights & R_DONOR)			verbs += admin_verbs_donor
 		if(holder.rights & R_DUTYOFF)		verbs += admin_verbs_duty //hehe duty

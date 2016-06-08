@@ -41,7 +41,7 @@
 
 	. = ..()
 
-		//Should include Astronav stuff over here!! #JAMINICODEMARK
+			//Should include Astronav stuff over here!! #JAMINICODEMARK
 	sun = new /datum/sun()
 	ship = new /datum/ship()
 
@@ -257,6 +257,31 @@ var/master_server_password
 	fdel(F)
 	F << the_mode
 
+/hook/startup/proc/loadVisibility()
+	world.load_visibility()
+	return 1
+
+/world/proc/load_visibility()
+	var/list/saved_settings = file2list("data/hubsetting.txt")
+//	var/list/invisible_days = list("Saturday", "Sunday")
+	log_debug("World loaded with visibility [saved_settings[1]].")
+	world.visibility = text2num(saved_settings[1])
+//	if (saved_settings.len == 2)
+//		log_misc("Saved visibility is: [saved_settings[1]]; saved override is: [saved_settings[2]].")
+//		if (text2num(saved_settings[2]) == 1)
+//			world.visibility = text2num(saved_settings[1])
+//		else
+//			if (time2text(realtime, "Day") in invisible_days)
+//				world.visibility = 0
+//			else
+//				world.visibility = 1
+//			save_visibility(world.visibility, 0)
+
+/world/proc/save_visibility(var/visibility, var/override = 0)
+	var/F = file("data/hubsetting.txt")
+	fdel(F)
+	F << visibility
+	F << override
 
 /hook/startup/proc/loadMOTD()
 	world.load_motd()
@@ -275,6 +300,8 @@ var/master_server_password
 	// apply some settings from config..
 	abandon_allowed = config.respawn
 
+	if (config.use_age_restriction_for_jobs)
+		config.load("config/age_restrictions.txt","age_restrictions")
 
 /hook/startup/proc/loadMods()
 	world.load_mods()
@@ -405,4 +432,25 @@ proc/establish_db_connection()
 	else
 		return 1
 
+//This proc disconnects the database forcefully, and then establishes connection again.
+proc/cycle_db_connection()
+	if (!dbcon)
+		return 0
+
+	log_debug("Cycling database connection.")
+	dbcon.Disconnect()
+
+	sleep(5)
+	setup_database_connection()
+
 #undef FAILED_DB_CONNECTION_CUTOFF
+
+// stores world.timeofday when the world starts for use in worldtime2text()
+
+var/world_timeofday_at_start
+
+hook/startup/proc/store_timeofday_at_start()
+	world_timeofday_at_start = world.timeofday
+	return 1
+
+

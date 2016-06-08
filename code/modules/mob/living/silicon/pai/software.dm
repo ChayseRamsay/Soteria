@@ -419,7 +419,7 @@
 	<A href='byond://?src=\ref[src];software=signaller;send=1'>Send Signal</A><BR>"}
 	return dat
 
-//Ship Bounced Radio
+//ship Bounced Radio
 /mob/living/silicon/pai/proc/softwareRadio()
 	var/dat = ""
 	dat += "<h2>Ship Bounced Radio</h2><hr>"

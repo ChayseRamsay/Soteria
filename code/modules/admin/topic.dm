@@ -629,13 +629,12 @@
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=Emergency Response Team;jobban4=\ref[M]'>Emergency Response Team</a></td>"
 
-
-/*		//Malfunctioning AI	//Removed Malf-bans because they're a pain to impliment
-		if(jobban_isbanned(M, "malf AI") || isbanned_dept)
-			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=malf AI;jobban4=\ref[M]'><font color=red>[replacetext("Malf AI", " ", "&nbsp")]</font></a></td>"
+		//Malfunctioning AI	//Removed Malf-bans because they're a pain to impliment //Why? Learn to program
+		if(jobban_isbanned(M, "MALFAI") || isbanned_dept)
+			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=malf AI;jobban4=\ref[M]'><font color=red>[replacetext("MALFAI", " ", "&nbsp")]</font></a></td>"
 		else
-			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=malf AI;jobban4=\ref[M]'>[replacetext("Malf AI", " ", "&nbsp")]</a></td>"
-
+			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=malf AI;jobban4=\ref[M]'>[replacetext("MALFAI", " ", "&nbsp")]</a></td>"
+/*
 		//Alien
 		if(jobban_isbanned(M, "alien candidate") || isbanned_dept)
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=alien candidate;jobban4=\ref[M]'><font color=red>[replacetext("Alien", " ", "&nbsp")]</font></a></td>"
@@ -1366,6 +1365,7 @@
 		var/special_role_description = ""
 		var/health_description = ""
 		var/gender_description = ""
+		var/species_description = ""
 		var/turf/T = get_turf(M)
 
 		//Location
@@ -1399,8 +1399,18 @@
 			if(MALE,FEMALE)	gender_description = "[M.gender]"
 			else			gender_description = "<font color='red'><b>[M.gender]</b></font>"
 
+		//Species
+		if(ishuman(M))
+			var/mob/living/carbon/human/K = M
+			if(K.species)
+				species_description = "[K.species.name]"
+			else
+				species_description = "Unknown"
+		else
+			species_description = "N/A"
+
 		src.owner << "<b>Info about [M.name]:</b> "
-		src.owner << "Mob type = [M.type]; Gender = [gender_description] Damage = [health_description]"
+		src.owner << "Mob type = [M.type]; Species = <b>[species_description]</b>; Gender = [gender_description]; Damage = [health_description]"
 		src.owner << "Name = <b>[M.name]</b>; Real_name = [M.real_name]; Mind_name = [M.mind?"[M.mind.name]":""]; Key = <b>[M.key]</b>;"
 		src.owner << "Location = [location_description];"
 		src.owner << "[special_role_description]"
@@ -1521,49 +1531,18 @@
 		H << "An encripted connection was made and a file was uploaded to your systems.  \"Please stand by for a message from Central Command.  Message as follows. <b>\"[input]\"</b>  Message ends.\""
 
 	else if(href_list["CentcommFaxView"])
-		var/info = locate(href_list["CentcommFaxView"])
+		if (!href_list["CentcommFaxReceived"] || !ticker)
+			return
 
-		usr << browse("<HTML><HEAD><TITLE>Centcomm Fax Message</TITLE></HEAD><BODY>[info]</BODY></HTML>", "window=Centcomm Fax Message")
+		var/list/fax = ticker.fax_repository.get_fax(text2num(href_list["CentcommFaxView"]), text2num(href_list["CentcommFaxReceived"]))
+
+		usr << browse("<HTML><HEAD><TITLE>Centcomm Fax Message</TITLE></HEAD><BODY>[fax["data"]]</BODY></HTML>", "window=Centcomm Fax Message")
 
 	else if(href_list["CentcommFaxReply"])
-		var/mob/living/carbon/human/H = locate(href_list["CentcommFaxReply"])
+		usr.client.send_admin_fax()
 
-		var/input = input(src.owner, "Please enter a message to reply to [key_name(H)] via secure connection. NOTE: BBCode does not work, but HTML tags do! Use <br> for line breaks.", "Outgoing message from Centcomm", "") as message|null
-		if(!input)	return
-
-		var/customname = input(src.owner, "Pick a title for the report", "Title") as text|null
-
-		//so that we alert people with certain cartidges with a PDA message.
-		alertFaxes()
-
-		for(var/obj/machinery/faxmachine/F in machines)
-			if(! (F.stat & (BROKEN|NOPOWER) ) )
-
-				// animate! it's alive!
-				flick("faxreceive", F)
-
-				// give the sprite some time to flick
-				spawn(20)
-					var/obj/item/weapon/paper/P = new /obj/item/weapon/paper( F.loc )
-					P.name = "[command_name()]- [customname]"
-					P.info = input
-					P.update_icon()
-
-					playsound(F.loc, "sound/items/polaroid1.ogg", 50, 1)
-
-					// Stamps
-					var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')
-					stampoverlay.icon_state = "paper_stamp-cent"
-					if(!P.stamped)
-						P.stamped = new
-					P.stamped += /obj/item/weapon/stamp
-					P.overlays += stampoverlay
-					P.stamps += "<HR><i>This paper has been stamped by the Central Command Quantum Relay.</i>"
-
-		src.owner << "Message reply to transmitted successfully."
-		log_admin("[key_name(src.owner)] replied to a fax message from [key_name(H)]: [input]")
-		message_admins("[key_name_admin(src.owner)] replied to a fax message from [key_name_admin(H)] <a href='?_src_=holder;CentcommFaxView=\ref[input]'>view message</a>", 1)
-
+	else if (href_list["CentcommFaxHistory"])
+		usr.client.check_fax_history(text2num(href_list["CentcommFaxHistory"]))
 
 	else if(href_list["jumpto"])
 		if(!check_rights(R_ADMIN|R_FUN))	return
@@ -1920,7 +1899,7 @@
 					return
 				feedback_inc("admin_secrets_fun_used",1)
 				feedback_add_details("admin_secrets_fun_used","PW")
-				message_admins("\blue [key_name_admin(usr)] teleported all players to the prison station.", 1)
+				message_admins("\blue [key_name_admin(usr)] teleported all players to the prison ship.", 1)
 				for(var/mob/living/carbon/human/H in mob_list)
 					var/turf/loc = find_loc(H)
 					var/security = 0
@@ -2146,11 +2125,11 @@
 						M.show_message(text("\blue The chilling wind suddenly stops..."), 1)
 /*				if("shockwave")
 				ok = 1
-				world << "\red <B><big>ALERT: SHIP STRESS CRITICAL</big></B>"
+				world << "\red <B><big>ALERT: STATION STRESS CRITICAL</big></B>"
 				sleep(60)
-				world << "\red <B><big>ALERT: SHIP STRESS CRITICAL. TOLERABLE LEVELS EXCEEDED!</big></B>"
+				world << "\red <B><big>ALERT: STATION STRESS CRITICAL. TOLERABLE LEVELS EXCEEDED!</big></B>"
 				sleep(80)
-				world << "\red <B><big>ALERT: SHIP STRUCTURAL STRESS CRITICAL. SAFETY MECHANISMS FAILED!</big></B>"
+				world << "\red <B><big>ALERT: STATION STRUCTURAL STRESS CRITICAL. SAFETY MECHANISMS FAILED!</big></B>"
 				sleep(40)
 				for(var/mob/M in world)
 					shake_camera(M, 400, 1)
@@ -2874,4 +2853,13 @@
 		var/playerckey = href_list["notessearchckey"]
 
 		show_notes_sql(playerckey, adminckey)
+		return
+
+	else if(href_list["dbwarningedit"])
+		var/warningEdit = href_list["dbwarningedit"]
+		var/warningId = text2num(href_list["dbwarningid"])
+		if(!warningEdit || !warningId)
+			return
+
+		warningsEdit(warningId, warningEdit)
 		return

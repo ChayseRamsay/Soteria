@@ -45,7 +45,7 @@
 	if(..())
 		return
 	if (src.z > 1)
-		usr << "\red <b>Unable to establish a connection</b>: \black You're too far away from the station!"
+		usr << "\red <b>Unable to establish a connection</b>: \black You're too far away from the ship!"
 		return
 	usr.set_machine(src)
 
@@ -102,7 +102,7 @@
 		if("announce")
 			if(src.authenticated==2)
 				if(message_cooldown)	return
-				var/input = stripped_input(usr, "Please choose a message to announce to the station crew.", "What?")
+				var/input = stripped_input(usr, "Please choose a message to announce to the ship crew.", "What?")
 				if(!input || !(usr in view(1,src)))
 					return
 				captain_announce(input)//This should really tell who is, IE HoP, CE, HoS, RD, Captain
@@ -279,7 +279,7 @@
 	if(..())
 		return
 	if (src.z > 6)
-		user << "\red <b>Unable to establish a connection</b>: \black You're too far away from the station!"
+		user << "\red <b>Unable to establish a connection</b>: \black You're too far away from the ship!"
 		return
 
 	user.set_machine(src)

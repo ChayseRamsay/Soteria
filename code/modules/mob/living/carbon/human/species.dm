@@ -145,6 +145,10 @@
 			I.mechanize()
 
 	if(flags & IS_BUG)
+		for (var/datum/organ/external/E in H.organs)
+			if ((E.status & ORGAN_CUT_AWAY) || (E.status & ORGAN_DESTROYED))
+				continue
+			E.status |= ORGAN_ADV_ROBOT
 		for(var/datum/organ/internal/I in H.internal_organs)
 			I.mechanize()
 
@@ -352,13 +356,25 @@ See code\modules\mob\new_player\preferences_setup.dm for where it's used.
 	deform = 'icons/mob/human_races/r_def_lizard.dmi'
 	language = "Sinta'unathi"
 	tail = "sogtail"
-	unarmed_type = /datum/unarmed_attack/punch
+	unarmed_type = /datum/unarmed_attack/claws
+	secondary_unarmed_type = /datum/unarmed_attack/bite/strong
 	primitive = /mob/living/carbon/monkey/unathi
+	darksight = 3
+	gluttonous = 1
 
-	flags = HAS_LIPS | HAS_UNDERWEAR | HAS_SKIN_COLOR
+	cold_level_1 = 280 //Default 260 - Lower is better
+	cold_level_2 = 220 //Default 200
+	cold_level_3 = 130 //Default 120
+
+	heat_level_1 = 420 //Default 360 - Higher is better
+	heat_level_2 = 480 //Default 400
+	heat_level_3 = 1100 //Default 1000
+
+	flags = IS_WHITELISTED | HAS_LIPS | HAS_UNDERWEAR | HAS_SKIN_COLOR
 
 	flesh_color = "#34AF10"
 
+	reagent_tag = IS_UNATHI
 	base_color = "#066000"
 
 /datum/species/tajaran
@@ -566,7 +582,7 @@ See code\modules\mob\new_player\preferences_setup.dm for where it's used.
 	rarity_value = 2
 
 	eyes = "blank_eyes"
-	brute_mod = 0.5
+	brute_mod = 1	//Fuck yo brute mod.
 	burn_mod = 1
 
 	warning_low_pressure = 50
@@ -590,6 +606,11 @@ See code\modules\mob\new_player\preferences_setup.dm for where it's used.
 	has_organ = list(
 		"heart" =    /datum/organ/internal/heart,
 		"brain" =    /datum/organ/internal/brain/robot,
+		"eyes" =	 /datum/organ/internal/eyes/robot,
+		"radiator" = /datum/organ/internal/machine/radiator,
+		"chemical containment" = /datum/organ/internal/machine/bladder,
+		"diagnosis unit" = /datum/organ/internal/machine/diagnosis_unit,
+		"ipc tag" = /datum/organ/internal/machine/ipc_tag
 		)
 /datum/species/machine/create_organs(var/mob/living/carbon/human/H)
 	..()
@@ -598,19 +619,69 @@ See code\modules\mob\new_player\preferences_setup.dm for where it's used.
 		if (isnull(brain_datum.machine_brain_type))
 			brain_datum.machine_brain_type="Posibrain"
 
+/datum/species/machine/proc/check_tag(var/mob/living/carbon/human/new_machine, var/client/player)
+	if (!new_machine || !player)
+		return
+
+	establish_db_connection()
+
+	if (dbcon.IsConnected())
+		var/datum/organ/internal/machine/ipc_tag/tag = new_machine.internal_organs_by_name["ipc tag"]
+
+		var/status = 0
+		var/list/query_details = list(":ckey" = player.ckey, ":character_name" = player.prefs.real_name)
+		var/DBQuery/query = dbcon.NewQuery("SELECT tag_status FROM ss13_ipc_tracking WHERE player_ckey = :ckey AND character_name = :character_name")
+		query.Execute(query_details)
+
+		if (query.NextRow())
+			status = text2num(query.item[1])
+		else
+			var/DBQuery/log_query = dbcon.NewQuery("INSERT INTO ss13_ipc_tracking (player_ckey, character_name) VALUES (:ckey, :character_name)")
+			log_query.Execute(query_details)
+
+		if (!status)
+			new_machine.internal_organs_by_name.Remove("ipc tag")
+			new_machine.internal_organs.Remove(tag)
+			del(tag)
+
+/datum/species/machine/proc/update_tag(var/mob/living/carbon/human/target, var/client/player)
+	if (!target || !player)
+		return
+
+	establish_db_connection()
+
+	if (dbcon.IsConnected())
+		var/status = 0
+		var/sql_status = 0
+		if (target.internal_organs_by_name["ipc tag"])
+			status = 1
+
+		var/list/query_details = list(":ckey" = player.ckey, ":character_name" = target.real_name)
+		var/DBQuery/query = dbcon.NewQuery("SELECT tag_status FROM ss13_ipc_tracking WHERE player_ckey = :ckey AND character_name = :character_name")
+		query.Execute(query_details)
+
+		if (query.NextRow())
+			sql_status = text2num(query.item[1])
+			if (sql_status == status)
+				return
+
+			query_details.Add(":status")
+			query_details[":status"] = status
+			var/DBQuery/update_query = dbcon.NewQuery("UPDATE ss13_ipc_tracking SET tag_status = :status WHERE player_ckey = :ckey AND character_name = :character_name")
+			update_query.Execute(query_details)
 
 /datum/species/bug
 	name = "Vaurca"
 	name_plural = "varucae"
 
-	icobase = 'icons/mob/human_races/r_machine.dmi' //placeholders
-	deform = 'icons/mob/human_races/r_machine.dmi' //bloop blop butts
+	icobase = 'icons/mob/human_races/r_vaurca.dmi' //Experimental as fuck
+	deform = 'icons/mob/human_races/r_vaurca.dmi' //bloop blop butts
 	language = "Vaurcese"
 	unarmed_type = /datum/unarmed_attack/claws //literally butts
 	secondary_unarmed_type = /datum/unarmed_attack/bite/strong
 	rarity_value = 2 //according to the code this does nothing but upset me so i guess it can stay
 	slowdown = 1 //slow
-	darksight = 666 //good at seeing
+	darksight = 5 //good at seeing
 	eyes = "blank_eyes" //made out of butts
 	brute_mod = 0.5 //note to self: remove is_synthetic checks for brmod and burnmod
 	burn_mod = 2 //bugs on fire
@@ -627,9 +698,9 @@ See code\modules\mob\new_player\preferences_setup.dm for where it's used.
 	heat_level_2 = 380 //Default 400
 	heat_level_3 = 600 //Default 1000 //bugs do not like fire because exoskeletons are poor ventilation
 
-	flags = IS_WHITELISTED | NO_SLIP | IS_BUG //IS_BUG doesn't do much at the moment.  proc up top + radiation resistance.
+	flags = IS_WHITELISTED | NO_SLIP | IS_BUG | NO_SCAN //IS_BUG doesn't do much at the moment.  proc up top + radiation resistance.
 	//use IS_BUG when you do the make their eyes die from being flashed thing, sounds/skull.  okay thanks.
-	blood_color = "#1F181F" // note: discover hex for yellow
+	blood_color = "#E6E600" // dark yellow
 	flesh_color = "#575757" //this is a placeholder also.
 
 	inherent_verbs = list(
@@ -637,6 +708,16 @@ See code\modules\mob\new_player\preferences_setup.dm for where it's used.
 		)
 
 	//make has_organ list when we can be bothered with bug gut sprites.  it'll be cool, i promise
+	has_organ = list(
+        "neural socket" =  /datum/organ/internal/vaurca/neuralsocket,
+		"breathing apparatus" =  /datum/organ/internal/vaurca/breathingapparatus,
+        "heart" =    /datum/organ/internal/heart,
+        "second heart" =    /datum/organ/internal/heart,
+		"liver" =    /datum/organ/internal/liver,
+		"kidneys" =  /datum/organ/internal/kidney,
+		"brain" =    /datum/organ/internal/brain,
+		"eyes" =     /datum/organ/internal/eyes,
+)
 
 // Called when using the shredding behavior.
 /datum/species/proc/can_shred(var/mob/living/carbon/human/H)

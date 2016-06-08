@@ -30,7 +30,7 @@
 
 /datum/game_mode/malfunction/pre_setup()
 	for(var/mob/new_player/player in player_list)
-		if(player.mind && player.mind.assigned_role == "AI" && (player.client.prefs.be_special & BE_MALF))
+		if(player.mind && player.mind.assigned_role == "AI" && (player.client.prefs.be_special & BE_MALF) && !jobban_isbanned(player, "MALFAI"))
 			malf_ai+=player.mind
 	if(malf_ai.len)
 		return 1
@@ -167,7 +167,6 @@
 	if (alert(usr, "Are you sure you wish to initiate the takeover? The ship hostile runtime detection software is bound to alert everyone. You have hacked [ticker.mode:apcs] APCs.", "Takeover:", "Yes", "No") != "Yes")
 		return
 
-	command_alert("Hostile runtimes detected in all ship systems, please deactivate your AI to prevent possible damage to its morality core.", "Anomaly Alert")
 	set_security_level("delta")
 
 	ticker.mode:malf_mode_declared = 1

@@ -57,6 +57,178 @@ should be listed in the changelog upon commit though. Thanks. -->
 <!-- DO NOT REMOVE, MOVE, OR COPY THIS COMMENT! THIS MUST BE THE LAST NON-EMPTY LINE BEFORE THE LOGS #ADDTOCHANGELOGMARKER# -->
 
 <div class='commit sansserif'>
+    <h2 class='date'>24 January 2016</h2>
+    <h3 class='author'>Skull132 Updated:</h3>
+    <ul class='changes bgimages16'>
+        <li class='rscadd'>BOREALIS lives.</li>
+        <li class='rscadd'>DOs can now send faxes without any prompts, and also view past faxes.</li>
+        <li class='rscadd'>IPC/Shell tags implemented, with consideration to lore around their usage.</li>
+        <li class='tweak'>Cyborg heads now come with law computers in them already. To make an IPC, you have to remove it before adding it to the cyborg body. This makes the default construction into a cyborg again.</li>
+        <li class='bugfix'>Time formatting fixed, seconds removed.</li>
+        <li class='bugfix'>Fixed the automatic spam detection. Automatic emotes should no longer trip the bot.</li>
+        <li class='bugfix'>Fixed the server's automatic visibility switch.</li>
+        <li class='bugfix'>Fixed the removal of cells from magnetic locks when they're in your hand.</li>
+        <li class='bugfix'>Hopefully fixed the weirdly networked cameras in atmos.</li>
+    </ul>
+    <h3 class='author'>Ryan784 Updated:</h3>
+    <ul class='changes bgimages16'>
+        <li class='tweak'>Edit Character button is now accessible from anywhere within the game.</li>
+        <li class='tweak'>Science goggles now have a chance to protect you from acid and stuff when sprayed.</li>
+        <li class='bugfix'>Evidence Lock-up access fixed.</li>
+        <li class='bugfix'>You can no longer strip people inside sleepers and thus make their items disappear.</li>
+        <li class='bugfix'>Fixed a bug with stacking ligher light sources.</li>
+    </ul>
+    <h3 class='author'>Serveris6 Updated:</h3>
+    <ul class='changes bgimages16'>
+        <li class='rscadd'>A myriad of preset custom items were added to the spawn menu.</li>
+    </ul>
+    <h3 class='author'>Vanagandr Updated:</h3>
+    <ul class='changes bgimages16'>
+        <li class='imageadd'>Blue sec hardsuits for all.</li>
+    </ul>
+</div>
+
+<div class='commit sansserif'>
+    <h2 class='date'>10 January 2016</h2>
+    <h3 class='author'>Skull132 Updated:</h3>
+    <ul class='changes bgimages16'>
+        <li class='rscadd'>Species statistics are now logged onto SQL.</li>
+        <li class='rscadd'>Admin verbs for in case the database goes kaput.</li>
+        <li class='bugfix'>Vaurca no longer heal without medication.</li>
+        <li class='bugfix'>The genetics/biologist lab has the advanced surgery table once more.</li>
+    </ul>
+    <h3 class='author'>Mahzel Updated:</h3>
+    <ul class='changes bgimages16'>
+        <li class='bugfix'>Guns found through xenoarcheology now have sprites, without the need for adminhax.</li>
+    </ul>
+    <h3 class='author'>Lord Lag Updated:</h3>
+    <ul class='changes bgimages16'>
+        <li class='bugfix'>Vaurca can no longer wear station hardsuits. Syndicate hardsuits are good, though.</li>
+    </ul>
+    <h3 class='author'>Lady_Of_Ravens Updated:</h3>
+    <ul class='changes bgimages16'>
+        <li class='rscadd'>Station time is now based on real (server) time. As is the date, and so on.</li>
+        <li class='bugfix'>Guest passes can no longer be used to generate infinite amount of guest passes.</li>
+        <li class='bugfix'>RnD vending machines now accept silver.</li>
+        <li class='bugfix'>Weapons crates from cargo now contain proper laser rifles.</li>
+    </ul>
+    <h3 class='author'>Ryan784 Updated:</h3>
+    <ul class='changes bgimages16'>
+        <li class='tweak'>Sleepy and para pens no longer work on body parts that are armoured. And no more instant attacking on anyone hardsuited.</li>
+        <li class='tweak'>Headsets can no longer be used while you're restrained or weakened (stunned and stuttering).</li>
+        <li class='tweak'>Body Scan consoles now print out named sheets.</li>
+        <li class='tweak'>Configure Radio verb added to cyborgs, as an alternative for clicking the "Radio" button.</li>
+        <li class='bugfix'>Vaurca have a spawn preset now.</li>
+        <li class='bugfix'>Vaurca cannot be cloned nor can their DNA be modified, one way or another.</li>
+        <li class='bugfix'>Syndicate hardsuit helmets no longer disappear after going through the suit cycler.</li>
+        <li class='bugfix'>Fixed the exploit of changelings being able to monkey an absorbed human, turn him back to human, and absorb him again. Absorbed bodies now gain the NOCLONE mutation.</li>
+    </ul>
+    <h3 class='author'>Wittme91 Updated:</h3>
+    <ul class='changes bgimages16'>
+        <li class='bugfix'>Piping on the engineering outpost fixed.</li>
+        <li class='bugfix'>Armoury shutter button now works for HoS and Warden.</li>
+        <li class='bugfix'>Grilles in the gravity generator room are now electrified.</li>
+        <li class='bugfix'>Blastdoors in arrivals now function properly.</li>
+        <li class='bugfix'>The button in the CMO's office, that controls doors, is now fixed.</li>
+    </ul>
+</div>
+
+<div class='commit sansserif'>
+    <h2 class='date'>04 January 2016</h2>
+    <h3 class='author'>Skull132 Updated:</h3>
+    <ul class='changes bgimages16'>
+        <li class='rscadd'>Fuel fires are back in the game (both welder fuel and flamethrowers burn properly).</li>
+        <li class='rscadd'>Adrenalin implant kits added to syndicate uplinks, worth 3 TC. Upon activation, the implant removes any and all stun effects that you have.</li>
+        <li class='rscadd'>Gave the vampires the ability to suck blood from bloodpacks. Just attack yourself with one. Note that only total blood is gained, not usable blood.</li>
+        <li class='tweak'>Loyalty implants tweaked: messages are now handled properly, head revs are safe once more, revs are properly removed, lings are given instructions on the fact that they can ignore the implant's effect.</li>
+        <li class='tweak'>Having a cortical borer in your head no longer flags you as such on the medical HUD.</li>
+        <li class='tweak'>Reworks whitelists to be SQL dependant, as opposed to running from a local file (should speed up server reboots).</li>
+        <li class='tweak'>Tweaks magnetic locks to have a powercell. Standard high cap cell will run a magnetic lock for about 16 minutes. Cells can be removed by using a screwdriver, then a crowbar.</li>
+        <li class='bugfix'>Loyalty implanted people cannot be enthralled. The vampire is now informed as such and the enthralling will fail.</li>
+        <li class='bugfix'>Vaurca eyes now take damage from flashbangs and flashes.</li>
+        <li class='bugfix'>Vaurca are now properly 'insulated' and resistant to electric shock.</li>
+        <li class='bugfix'>Multiple bugfixes on the map, by Witt.</li>
+        <li class='bugfix'>Organ transplants are fixed and now work, with the possible exception of eyes. Need to test. This also means that you can use the use the advanced operating table to conduct full on brain transplants.</li>
+        <li class='bugfix'>Head re-attachment surgery no longer deletes the brain.</li>
+    </ul>
+</div>
+
+<div class='commit sansserif'>
+	<h2 class='date'>8 December 2015</h2>
+	<h3 class='author'>SoundScopes updated:</h3>
+	<ul class='changes bgimages16'>
+		<li class='rscadd'>Custom AI holograms</li>
+		<li class='rscadd'>Advanced opperating table (Life Suppport Machine)</li>
+		<li class='rscadd'>Radio Jammer</li>
+		<li class='rscadd'>Magnetic door locks to hold airlocks shut</li>
+		<li class='tweak'>Malf AI startup selection</li>
+		<li class='tweak'>Shuttle ETA shown on watches when examined</li>
+		<li class='bugfix'>Security Roles can be vampires again</li>
+	</ul>
+</div>
+
+<div class='commit sansserif'>
+	<h2 class='date'>Probably October</h2>
+	<h3 class='author'>SoundScopes updated:</h3>
+	<ul class='changes bgimages16'>
+		<li class='rscadd'>Reset PDA verb</li>
+    	<li class='rscadd'>Spell to remove horse masks</li>
+        <li class='rscadd'>IPC organs: Diagnosis unit for being up to date on your health and temperature, located in the head</li>
+		<li class='rscadd'>IPC organs: Chemical storage unit, for holding onto internal chemicals, located in the groin</li>
+		<li class='rscadd'>IPC organs: Radiator, for maintaining body temperature, located in the chest</li>
+        <li class='tweak'>IPC organs:Makes IPCs susceptible to flashes, by giving them eyes</li>
+		<li class='tweak'>IPC organs: Removes the brute modifier (we'll see how this goes)</li>
+		<li class='imageadd'>Peanut seed sprite</li>
+		<li class='bugfix'>Space has been fixed so you only need to define an area once</li>
+        <li class='bugfix'>SQL bug</li>
+	</ul>
+</div>
+
+<div class='commit sansserif'>
+	<h2 class='date'>23 August 2015</h2>
+	<h3 class='author'>SoundScopes updated:</h3>
+	<ul class='changes bgimages16'>
+		<li class='rscadd'>Click dragging mobs into medical machinery and cryo pods </li>
+		<li class='rscadd'>Emagged cyborgs can turn off their external speakers and get access to the syndicate channel</li>
+		<li class='imageadd'>Tajara Curly hair</li>
+		<li class='imageadd'>ERT Backpack sprites</li>
+		<li class='rscdel'>Bugged out Silent Step Fabric</li>
+		<li class='tweak'>Posibrain request now appear in chat rather than an alert message</li>
+		<li class='tweak'>Posibrains will now display a message showing if the player can be cyborgs or IPC's</li>
+		<li class='tweak'>IPC's are fully whitelisted</li>
+		<li class='tweak'>AI and borgs can now lock & unlock emitters</li>
+		<li class='tweak'>Engineering borgs get a magnetic gripper</li>
+		<li class='tweak'>Delay added to the paint cartridges</li>
+		<li class='tweak'>Holocarp are blue and spark</li>
+		<li class='tweak'>Robotics machinery requires robotics access</li>
+		<li class='tweak'>SQL News feed linked with the website code</li>
+		<li class='tweak'>Robot Endoskeletons can be pulled apart with a crowbar</li>
+		<li class='tweak'>Access levels in engineering doors</li>
+		<li class='tweak'>Reduced vents and scrubbers in select area's</li>
+		<li class='tweak'>Chameleon Kit cost raised as it cost the same as less than what was in it (It's still less than all the items combined)</li>
+		<li class='bugfix'>Examining paint cartridges should work properly</li>
+		<li class='bugfix'>Ninja energy nets now release people when they are gone</li>
+		<li class='bugfix'>IPC should no longer be able to get random mutations</li>
+		<li class='bugfix'>Fixes the issue with damaged IPC shells having their metallic bodies tinted by their body colour</li>
+		<li class='bugfix'>Fixes the issue with tails not updating properly on IPC shells</li>
+		<li class='bugfix'>Spray-cans will no longer remove hair on IPC shells, provided that you're not changing apparent species</li>
+		<li class='bugfix'>Updates atmos and EVA manuals to the current system</li>
+		<li class='bugfix'>Captains office gets affected by radiation storms</li>
+		<li class='bugfix'>Posibrains reset their icon rather than turn into a cyberbrain when suiciding</li>
+		<li class='bugfix'>Removed Job specific ERT backpacks due to missing or lost icons</li>
+		<li class='bugfix'>Mobs missing a brain will have one created when respawned with admin rejuve</li>
+		<li class='bugfix'>HoP office windoors are now the correct door type and access level</li>
+		<li class='bugfix'>Holopad added to Robotics & AI core</li>
+		<li class='bugfix'>Syndibundle should now give the stealth pack instead of an empty box</li>
+		<li class='bugfix'>Airlocks on the outpost and Tcomms fixed(Code for it still needs a look at, something is wrong there)</li>
+		<li class='bugfix'>Gas mix tank no longer starts with air(Mix tank not Air tank)</li>
+		<li class='bugfix'>No longer able to join with a null computerID</li>
+
+	</ul>
+</div>
+
+
+<div class='commit sansserif'>
 	<h2 class='date'>11 July 2015</h2>
 	<h3 class='author'>SoundScopes updated:</h3>
 	<ul class='changes bgimages16'>

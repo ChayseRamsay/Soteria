@@ -1,6 +1,6 @@
 /obj/item/blueprints
-	name = "station blueprints"
-	desc = "Blueprints of the station. There is a \"Classified\" stamp and several coffee stains on it."
+	name = "ship blueprints"
+	desc = "Blueprints of the ship. There is a \"Classified\" stamp and several coffee stains on it."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "blueprints"
 	attack_verb = list("attacked", "bapped", "hit")
@@ -80,7 +80,7 @@ move an amendment</a> to the drawing.</p>
 	return A
 
 /obj/item/blueprints/proc/get_area_type(var/area/A = get_area())
-	if (A.name == "Space")
+	if (A.name == "\improper Space")
 		return AREA_SPACE
 	var/list/SPECIALS = list(
 		/area/shuttle,

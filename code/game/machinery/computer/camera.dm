@@ -3,7 +3,7 @@
 
 /obj/machinery/computer/security
 	name = "Security Cameras"
-	desc = "Used to access the various cameras on the station."
+	desc = "Used to access the various cameras on the ship."
 	icon_state = "cameras"
 	var/obj/machinery/camera/current = null
 	var/last_pic = 1.0
@@ -31,7 +31,7 @@
 
 	attack_hand(var/mob/user as mob)
 		if (src.z > 6)
-			user << "\red <b>Unable to establish a connection</b>: \black You're too far away from the station!"
+			user << "\red <b>Unable to establish a connection</b>: \black You're too far away from the ship!"
 			return
 		if(stat & (NOPOWER|BROKEN))	return
 
@@ -80,7 +80,7 @@
 			A.eyeobj.setLoc(get_turf(C))
 			A.client.eye = A.eyeobj
 			return 1
-		
+
 		if (!C.can_use() || user.stat || (get_dist(user, src) > 1 || user.machine != src || user.blinded || !( user.canmove ) && !istype(user, /mob/living/silicon)))
 			return 0
 		src.current = C
@@ -157,7 +157,7 @@
 
 /obj/machinery/computer/security/wooden_tv
 	name = "Security Cameras"
-	desc = "An old TV hooked into the stations camera network."
+	desc = "An old TV hooked into the ships camera network."
 	icon_state = "security_det"
 	circuit = null
 

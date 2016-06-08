@@ -150,6 +150,19 @@
 /obj/item/organ/eyes/prosthetic
 	robotic = 2
 
+/obj/item/organ/eyes/robot
+	name = "charge-coupled device"
+	icon_state = ""
+	organ_type = /datum/organ/internal/eyes/robot
+	robotic = 2
+
+	exposed_to_the_world()
+		var/obj/item/robot_parts/robot_component/camera/Camera = new()
+		if(organ_data.damage)
+			Camera.brute = organ_data.damage
+		del(src)
+		return Camera
+
 /obj/item/organ/liver/prosthetic
 	robotic = 2
 
@@ -178,13 +191,15 @@
 		user.attack_log += "\[[time_stamp()]\]<font color='red'> removed a vital organ ([src]) from [target.name] ([target.ckey]) (INTENT: [uppertext(user.a_intent)])</font>"
 		target.attack_log += "\[[time_stamp()]\]<font color='orange'> had a vital organ ([src]) removed by [user.name] ([user.ckey]) (INTENT: [uppertext(user.a_intent)])</font>"
 		msg_admin_attack("[user.name] ([user.ckey]) removed a vital organ ([src]) from [target.name] ([target.ckey]) (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
-		target.death()
 
-		
+		if (!target.isonlifesupport())
+			target.death()
+
+
 /obj/item/organ/proc/exposed_to_the_world() // this is only useful for organs that change when actually removed from the body
-	return 
-		
-		
+	return
+
+
 /obj/item/organ/appendix/removed(var/mob/living/target,var/mob/living/user)
 
 	..()

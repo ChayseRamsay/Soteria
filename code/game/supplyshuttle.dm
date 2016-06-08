@@ -203,7 +203,7 @@ var/list/mechtoys = list(
 					var/atom/A = atom
 					if(find_slip && istype(A,/obj/item/weapon/paper/manifest))
 						var/obj/item/weapon/paper/slip = A
-						if(slip.stamped && slip.stamped.len) //yes, the clown stamp will work. clown is the highest authority on the station, it makes sense
+						if(slip.stamped && slip.stamped.len) //yes, the clown stamp will work. clown is the highest authority on the ship, it makes sense
 							points += points_per_slip
 							find_slip = 0
 						continue
@@ -378,7 +378,7 @@ var/list/mechtoys = list(
 		reqform.info += "RANK: [idrank]<br>"
 		reqform.info += "REASON: [reason]<br>"
 		reqform.info += "SUPPLY CRATE TYPE: [P.name]<br>"
-		reqform.info += "ACCESS RESTRICTION: [replacetext(get_access_desc(P.access))]<br>"
+		reqform.info += "ACCESS RESTRICTION: [bayreplacetext(get_access_desc(P.access))]<br>"
 		reqform.info += "CONTENTS:<br>"
 		reqform.info += P.manifest
 		reqform.info += "<hr>"
@@ -582,7 +582,7 @@ var/list/mechtoys = list(
 		reqform.info += "RANK: [idrank]<br>"
 		reqform.info += "REASON: [reason]<br>"
 		reqform.info += "SUPPLY CRATE TYPE: [P.name]<br>"
-		reqform.info += "ACCESS RESTRICTION: [replacetext(get_access_desc(P.access))]<br>"
+		reqform.info += "ACCESS RESTRICTION: [bayreplacetext(get_access_desc(P.access))]<br>"
 		reqform.info += "CONTENTS:<br>"
 		reqform.info += P.manifest
 		reqform.info += "<hr>"

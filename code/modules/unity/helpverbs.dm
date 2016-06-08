@@ -139,7 +139,7 @@
 	return
 
 
-
+/*
 /mob/living/carbon/human/verb/hold_breath()
 	set category = "IC"
 	set name = "Hold Breath"
@@ -150,4 +150,4 @@
 		src <<  "You start holding your breath."
 	else
 		src << "You start breathing normally."
-
+*/

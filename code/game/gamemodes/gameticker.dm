@@ -39,6 +39,8 @@ var/global/datum/controller/gameticker/ticker
 
 	var/round_end_announced = 0 // Spam Prevention. Announce round end only once.
 
+	var/datum/fax_repository/fax_repository
+
 /datum/controller/gameticker/proc/pregame()
 	login_music = pick(\
 	/*'sound/music/halloween/skeletons.ogg',\
@@ -59,13 +61,13 @@ var/global/datum/controller/gameticker/ticker
 				vote.process()
 			if(going)
 				pregame_timeleft--
-		/*	if(pregame_timeleft == config.vote_autogamemode_timeleft)
+			if(pregame_timeleft == config.vote_autogamemode_timeleft)
 				if(!vote.time_remaining)
 					vote.autogamemode()	//Quit calling this over and over and over and over.
 					while(vote.time_remaining)
 						for(var/i=0, i<10, i++)
 							sleep(1)
-							vote.process()*/
+							vote.process()
 			if(pregame_timeleft <= 0)
 				current_state = GAME_STATE_SETTING_UP
 	while (!setup())
@@ -135,6 +137,8 @@ var/global/datum/controller/gameticker/ticker
 	//here to initialize the random events nicely at round start
 	setup_economy()
 
+	fax_repository = new()
+
 	shuttle_controller.setup_shuttle_docks()
 
 	spawn(0)//Forking here so we dont have to wait for this to finish
@@ -158,6 +162,7 @@ var/global/datum/controller/gameticker/ticker
 			admins_number++
 	if(admins_number == 0)
 		send2adminirc("Round has started with no admins online.")
+		send_to_discord("admin_channel", "@everyone Round has started with no staff online.")
 
 	supply_controller.process() 		//Start the supply shuttle regenerating points -- TLE
 	master_controller.process()		//Start master_controller.process()
@@ -341,7 +346,7 @@ var/global/datum/controller/gameticker/ticker
 				if (mode.station_was_nuked)
 					feedback_set_details("end_proper","nuke")
 					if(!delay_end)
-						world << "\blue <B>Rebooting due to destruction of ship in [restart_timeout/10] seconds</B>"
+						world << "\blue <B>Rebooting due to destruction of station in [restart_timeout/10] seconds</B>"
 				else
 					feedback_set_details("end_proper","proper completion")
 					if(!delay_end)

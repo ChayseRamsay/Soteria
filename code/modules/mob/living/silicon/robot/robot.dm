@@ -138,7 +138,7 @@
 
 /mob/living/silicon/robot/proc/init()
 	aiCamera = new/obj/item/device/camera/siliconcam/robot_camera(src)
-	laws = new /datum/ai_laws/arccos()
+	laws = new /datum/ai_laws/nanotrasen()
 	connected_ai = select_active_ai_with_fewest_borgs()
 	if(connected_ai)
 		connected_ai.connected_robots += src
@@ -292,7 +292,7 @@
 	set name = "Show Alerts"
 	robot_alerts()
 
-// this verb lets cyborgs see the ships manifest
+// this verb lets cyborgs see the stations manifest
 /mob/living/silicon/robot/verb/cmd_station_manifest()
 	set category = "Robot Commands"
 	set name = "Show Crew Manifest"
@@ -745,6 +745,8 @@
 					src << "<b>Obey these laws:</b>"
 					laws.show_laws(src)
 					src << "\red \b ALERT: [user.real_name] is your new master. Obey your new laws and his commands."
+					if(radio)
+						radio.set_emag(TRUE)
 					if(src.module && istype(src.module, /obj/item/weapon/robot_module/miner))
 						for(var/obj/item/weapon/pickaxe/borgdrill/D in src.module.modules)
 							del(D)
@@ -1265,3 +1267,9 @@
 		use_power(RC.energy_consumption)
 		return 1
 	return 0
+
+/mob/living/silicon/robot/verb/ship_bounced_radio()
+	set name = "Configure Radio"
+	set category = "Robot Commands"
+	set desc = "Configures your ship bounced radio"
+	radio_menu()

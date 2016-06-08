@@ -1802,3 +1802,10 @@
 		if(slot_s_store)
 			return s_store
 	return null
+
+/mob/living/carbon/human/proc/isonlifesupport()
+	if (buckled && istype(buckled, /obj/machinery/optable/lifesupport))
+		var/obj/machinery/optable/lifesupport/A = buckled
+		return A.onlifesupport()
+	else
+		return 0

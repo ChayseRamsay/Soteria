@@ -136,6 +136,18 @@
 #define PLASMA_MINIMUM_OXYGEN_PLASMA_RATIO	20
 #define PLASMA_OXYGEN_FULLBURN				10
 
+//For other fires
+#define FIRE_REACTION_OXIDIZER_AMOUNT		3
+#define FIRE_REACTION_FUEL_AMOUNT 			2
+
+#define FIRE_GAS_BURNRATE_MULT				1
+#define FIRE_LIQUID_BURNRATE_MULT			0.5
+
+#define LIQUIDFUEL_AMOUNT_TO_MOL			1
+
+#define FIRE_GAS_MIN_BURNRATE				0.1
+#define FIRE_LIQUD_MIN_BURNRATE				0.05
+
 #define T0C 273.15					// 0degC
 #define T20C 293.15					// 20degC
 #define TCMB 2.7					// -270.3degC
@@ -525,6 +537,7 @@ var/list/liftable_structures = list(\
 //Number of identical messages required to get the spam-prevention automute thing to trigger warnings and automutes
 #define SPAM_TRIGGER_WARNING 5
 #define SPAM_TRIGGER_AUTOMUTE 10
+#define SPAM_TIMER 5
 
 //Some constants for DB_Ban
 #define BANTYPE_PERMA		1
@@ -608,6 +621,7 @@ var/list/liftable_structures = list(\
 #define SALVED 512
 #define ORGAN_DEAD 1024
 #define ORGAN_MUTATED 2048
+#define ORGAN_ADV_ROBOT 4096
 
 #define ROUNDSTART_LOGOUT_REPORT_TIME 6000 //Amount of time (in deciseconds) after the rounds starts, that the player disconnect report is issued.
 
@@ -622,19 +636,18 @@ var/list/liftable_structures = list(\
 #define R_SERVER		16
 #define R_DEBUG			32
 #define R_POSSESS		64
-#define R_PERMISSIONS	256
-#define R_STEALTH		512
-#define R_REJUVINATE	1024
-#define R_VAREDIT		2048
-#define R_SOUNDS		4096
-#define R_SPAWN			8192
-#define R_MOD			16384
-#define R_DEV			32768
-#define R_DUTYOFF		65536
-#define R_DONOR 		131072
-#define R_MAXPERMISSION 131072 //This holds the maximum value for a permission. It is used in iteration, so keep it updated.
+#define R_PERMISSIONS	128
+#define R_STEALTH		256
+#define R_REJUVINATE	512
+#define R_VAREDIT		1024
+#define R_SOUNDS		2048
+#define R_SPAWN			4096
+#define R_MOD			8192
+#define R_DEV			16384
+#define R_DUTYOFF		32768
+#define R_MAXPERMISSION 32768 //This holds the maximum value for a permission. It is used in iteration, so keep it updated.
 
-#define R_HOST			262143
+#define R_HOST			65535
 
 //Preference toggles
 #define SOUND_ADMINHELP	1

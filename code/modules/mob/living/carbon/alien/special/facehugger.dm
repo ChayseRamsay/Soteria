@@ -111,9 +111,9 @@ var/const/MAX_ACTIVE_TIME = 400
 		throwing = 0
 
 /obj/item/clothing/mask/facehugger/proc/Attach(M as mob)
-	if(isalien(M))
+	if( (!iscorgi(M) && !iscarbon(M)) || isalien(M))
 		return
-	if(!istype(M,/mob/living/carbon/human))
+	if(attached)
 		return
 	else
 		attached++
@@ -227,7 +227,11 @@ var/const/MAX_ACTIVE_TIME = 400
 	return
 
 /proc/CanHug(var/mob/M)
-	if(!istype(M,/mob/living/carbon/human))
+
+	if(iscorgi(M))
+		return 1
+
+	if(!iscarbon(M) || isalien(M))
 		return 0
 	var/mob/living/carbon/C = M
 	if(ishuman(C))

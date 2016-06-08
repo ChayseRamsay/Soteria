@@ -12,7 +12,7 @@
 	desc = "This disease destroys the braincells, causing brain fever, brain necrosis and general intoxication."
 	severity = "Major"
 
-/datum/disease/brainrot/stage_act() //Removed toxloss because damaging diseases are pretty horrible. Last round it killed the entire station because the cure didn't work -- Urist
+/datum/disease/brainrot/stage_act() //Removed toxloss because damaging diseases are pretty horrible. Last round it killed the entire ship because the cure didn't work -- Urist
 	..()
 	switch(stage)
 		if(2)

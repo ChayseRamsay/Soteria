@@ -2,7 +2,7 @@
 // for the moment, just report the status of all APCs in the same powernet
 /obj/machinery/power/monitor
 	name = "power monitoring computer"
-	desc = "It monitors power levels across the station."
+	desc = "It monitors power levels across the ship."
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "power"
 	density = 1

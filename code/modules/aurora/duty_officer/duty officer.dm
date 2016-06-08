@@ -16,6 +16,10 @@
 		src << "\red The game hasn't started yet!"
 		return
 
+	if(istype(mob, /mob/new_player))
+		src << "\red You can't be in the lobby to join as a duty officer"
+		return
+
 	if(mob.mind && mob.mind.special_role == "Duty Officer")
 		src << "\red You are already a Duty Officer"
 		verbs += /client/proc/returntobody
@@ -130,6 +134,8 @@
 			bag.name = "officer's leather satchel"
 			bag.desc = "A well cared for leather satchel for Nanotrasen officers."
 			M.equip_if_possible(bag, slot_back)
+			if(M.backbag == 1)
+				M.equip_to_slot_or_del(new /obj/item/weapon/stamp/centcomm(M.back), slot_in_backpack)
 
 			var /obj/item/weapon/storage/lockbox/lockbox = new(M)
 			lockbox.req_access = list(access_cent_captain)
@@ -240,3 +246,101 @@
 			var/oldjob = M.mind.assigned_role
 			job_master.FreeRole(oldjob)
 	return
+
+/client/proc/send_admin_fax()
+	set name = "Send admin fax"
+	set desc = "Send a fax from Central Command"
+	set category = "Special Verbs"
+
+	if (!check_rights(R_ADMIN|R_DUTYOFF|R_FUN))
+		usr << "\red You do not have enough powers to do this."
+		return
+
+	if (!ticker)
+		usr << "\red No ticker! Bad!"
+		return
+
+	if (ticker.current_state < GAME_STATE_PLAYING)
+		usr << "\red The game hasn't started yet!"
+		return
+
+	var/input = input(usr, "Please enter a message to send to [station_name()] via secure connection. NOTE: BBCode does not work, but HTML tags do! Use <br> for line breaks.", "Outgoing message from Centcomm", "") as message|null
+
+	if (!input)
+		usr << "\red Cancelled."
+		return
+
+	var/customsender = input(usr, "Pick a Duty Officer name to use", "Name") as text|null
+	if (!customsender)
+		usr << "\red Name required! Cancelled."
+		return
+
+	var/customname = input(usr, "Pick a title for the report", "Title") as text|null
+
+	//so that we alert people with certain cartidges with a PDA message.
+	alertFaxes()
+
+	for (var/obj/machinery/faxmachine/F in machines)
+		if (!(F.stat & (BROKEN|NOPOWER)))
+
+			// animate! it's alive!
+			flick("faxreceive", F)
+
+			// give the sprite some time to flick
+			spawn(20)
+				var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(F.loc)
+				P.name = "[command_name()]- [customname]"
+				P.info = input
+				P.update_icon()
+
+				playsound(F.loc, "sound/items/polaroid1.ogg", 50, 1)
+
+				// Stamps
+				var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')
+				stampoverlay.icon_state = "paper_stamp-cent"
+				if (!P.stamped)
+					P.stamped = new
+				P.stamped += /obj/item/weapon/stamp
+				P.overlays += stampoverlay
+				P.stamps += "<HR><i>This paper has been stamped by the Central Command Quantum Relay.</i>"
+
+	var/fax_id = ticker.fax_repository.add_fax(input, customname, customsender, 0)
+
+	usr << "Message reply to transmitted successfully."
+	log_admin("[key_name(usr)] sent a Central Command fax message: [input]")
+	message_admins("[key_name_admin(usr)] sent a Central Command fax message: <a href='?_src_=holder;CentcommFaxView=[fax_id];CentcommFaxReceived=0'>view message</a>", 1)
+
+/client/proc/check_fax_history()
+	set name = "Check fax history"
+	set desc = "Look up the faxes sent this round."
+	set category = "Special Verbs"
+
+	if (!check_rights(R_ADMIN|R_DUTYOFF|R_FUN))
+		usr << "\red You do not have enough powers to do this."
+		return
+
+	if (!ticker)
+		usr << "\red No ticker! Bad!"
+		return
+
+	if (ticker.current_state < GAME_STATE_PLAYING)
+		usr << "\red The game hasn't started yet!"
+		return
+
+	var/data = "<center><a href='?_src_=holder;CentcommFaxReply=1'>Send New Fax</a></center>"
+	data += "<hr>"
+	data += "<center><b>Received Faxes:</b></center><br>"
+	var/list/faxes = ticker.fax_repository.received_faxes
+
+	for (var/i = 1, i <= faxes.len, i++)
+		var/list/a = faxes[i]
+		data += "<a href='?_src_=holder;CentcommFaxView=[i];CentcommFaxReceived=1'>#[i] - '[a["subject"]]' from [a["sender"]]</a><br>"
+
+	faxes = ticker.fax_repository.sent_faxes
+
+	data += "<hr><center><b>Sent Faxes:</b></center><br>"
+	for (var/i = 1, i <= faxes.len, i++)
+		var/list/a = faxes[i]
+		data += "<a href='?_src_=holder;CentcommFaxView=[i];CentcommFaxReceived=0'>#[i] - '[a["subject"]]' from [a["sender"]]</a><br>"
+
+	usr << browse("<HTML><HEAD><TITLE>Centcomm Fax History</TITLE></HEAD><BODY>[data]</BODY></HTML>", "window=Centcomm Fax History")

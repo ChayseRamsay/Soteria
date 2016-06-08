@@ -77,7 +77,7 @@
 	new /obj/item/clothing/suit/storage/lawyer/purpjacket(src)
 	new /obj/item/clothing/shoes/brown(src)
 	new /obj/item/clothing/shoes/black(src)
-
+/*
 /*
  * ERT
  */
@@ -98,13 +98,13 @@
 	new /obj/item/device/radio/headset/ert(src)
 	new /obj/item/device/radio/headset/ert(src)
 	new /obj/item/device/radio/headset/ert(src)
-	new /obj/item/clothing/under/rank/ert/medic(src)
-	new /obj/item/clothing/under/rank/ert/medic(src)
-	new /obj/item/clothing/under/rank/ert/security(src)
-	new /obj/item/clothing/under/rank/ert/security(src)
-	new /obj/item/clothing/under/rank/ert/engineer(src)
-	new /obj/item/clothing/under/rank/ert/engineer(src)
-	new /obj/item/clothing/under/rank/ert/commander(src)
+	new /obj/item/clothing/under/rank/ert/soldier(src)
+	new /obj/item/clothing/under/rank/ert/soldier(src)
+	new /obj/item/clothing/under/rank/ert/soldier(src)
+	new /obj/item/clothing/under/rank/ert/nco(src)
+	new /obj/item/clothing/under/rank/ert/nco(src)
+	new /obj/item/clothing/under/rank/ert/nco(src)
+	new /obj/item/clothing/under/rank/ert/officer(src)
 	new /obj/item/weapon/storage/backpack/ert/leader(src)
 	new /obj/item/weapon/storage/backpack/ert/sapper(src)
 	new /obj/item/weapon/storage/backpack/ert/sapper(src)
@@ -112,3 +112,4 @@
 	new /obj/item/weapon/storage/backpack/ert/medic(src)
 	new /obj/item/weapon/storage/backpack/ert/security(src)
 	new /obj/item/weapon/storage/backpack/ert/security(src)
+*/

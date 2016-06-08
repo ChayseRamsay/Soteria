@@ -150,7 +150,7 @@ proc/trigger_armed_response_team(var/force = 0)
 	if(!nuke)
 		nuke = locate() in world
 	var/obj/item/weapon/paper/P = new
-	P.info = "Your orders, Commander, are to use all means necessary to return the station to a survivable condition.<br>To this end, you have been provided with the best tools we can give in the three areas of Medicine, Engineering, and Security. The nuclear authorization code is: <b>[ nuke ? nuke.r_code : "AHH, THE NUKE IS GONE!"]</b>. Be warned, if you detonate this without good reason, we will hold you to account for damages. Memorise this code, and then burn this message."
+	P.info = "Your orders, Commander, are to use all means necessary to return the ship to a survivable condition.<br>To this end, you have been provided with the best tools we can give in the three areas of Medicine, Engineering, and Security. The nuclear authorization code is: <b>[ nuke ? nuke.r_code : "AHH, THE NUKE IS GONE!"]</b>. Be warned, if you detonate this without good reason, we will hold you to account for damages. Memorise this code, and then burn this message."
 	P.name = "Emergency Nuclear Code, and ERT Orders"
 	for (var/obj/effect/landmark/A in world)
 		if (A.name == "nukecode")
@@ -283,7 +283,7 @@ proc/trigger_armed_response_team(var/force = 0)
 	equip_to_slot_or_del(new /obj/item/device/radio/headset/ert(src), slot_l_ear)
 
 	//Replaced with new ERT uniform
-	equip_to_slot_or_del(new /obj/item/clothing/under/rank/ert(src), slot_w_uniform)
+//	equip_to_slot_or_del(new /obj/item/clothing/under/rank/ert(src), slot_w_uniform)
 	equip_to_slot_or_del(new /obj/item/clothing/suit/storage/ert(src), slot_wear_suit)
 	equip_to_slot_or_del(new /obj/item/clothing/shoes/swat(src), slot_shoes)
 	equip_to_slot_or_del(new /obj/item/clothing/gloves/swat(src), slot_gloves)

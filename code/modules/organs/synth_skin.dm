@@ -9,7 +9,7 @@ var/SYNTHETIC_COVERING_DAMAGED=0
 
 datum/synthetic_limb_cover
 	var/coverage //
-	var/colour=null//
+	var/colour=null// 
 	var/datum/organ/external/limb_datum // the limb in question
 	var/obj/item/robot_parts/limb_item // also the limb in question (if dismembered)
 	var/main_icon = 'icons/mob/human_races/robotic.dmi'
@@ -29,9 +29,10 @@ datum/synthetic_limb_cover/New(	var/datum/organ/external/datum_target=null,var/i
 datum/synthetic_limb_cover/proc/get_icon() // default mechanical limbs return robo versions
 	var/icon/temp = new /icon((coverage ? main_icon : damage_icon), "[limb_datum.icon_name][limb_datum.get_gender_string()]") // only add a gender if it's necessary
 	var/icon/result = icon(temp)
-	result.Blend(colour, ICON_ADD)
+	if (coverage)
+		result.Blend(colour, ICON_ADD)
 	return result
-
+	
 
 datum/synthetic_limb_cover/proc/repair()
 	coverage = SYNTHETIC_COVERING_WORKING
@@ -45,7 +46,7 @@ datum/synthetic_limb_cover/proc/damage()
 
 datum/synthetic_limb_cover/proc/set_colour(input_colour)
 	colour=input_colour
-
+	
 
 datum/synthetic_limb_cover/proc/update_icon()
 	if (limb_datum)
@@ -94,8 +95,8 @@ var/list/limb_covering_references
 			var/datum/synthetic_limb_cover/temp_cover = new skin_type()
 			limb_covering_references[skin_type]=temp_cover
 	return limb_covering_references
-
-
+	
+	
 var/list/limb_covering_names
 /proc/get_limb_covering_names()
 	if (isnull(limb_covering_names))
@@ -105,7 +106,7 @@ var/list/limb_covering_names
 			var/datum/synthetic_limb_cover/temp=refs[skin_type]
 			limb_covering_names.Add(temp.icon_key_type)
 	return limb_covering_names
-
+	
 
 var/list/limb_covering_list
 /proc/get_limb_covering_list()
@@ -116,7 +117,7 @@ var/list/limb_covering_list
 			var/datum/synthetic_limb_cover/temp=refs[skin_type]
 			limb_covering_list[temp.icon_key_type]=skin_type
 	return limb_covering_list
-
+	
 
 /obj/item/weapon/synth_skin_spray
 	name = "robot paint gun"
@@ -136,27 +137,27 @@ var/list/limb_covering_list
 	var/list/construction_cost = list("metal"=400,"glass"=100)
 	New()
 		update_icon()
-
+	
 
 proc/create_tinted_icon(icon_name, icon_state_name, target_colour)
 	var/icon/result = new /icon(icon_name,icon_state_name)
 	result.Blend(target_colour, ICON_ADD)  // if we have charges left, show the colour, otherwise grey
 	return result
-
-
+	
+	
 /obj/item/weapon/synth_skin_spray/proc/paint_icon()
 	return create_tinted_icon(icon,"installed_paint_skin",cartridge.paint_colour)
-
+	
 /obj/item/weapon/synth_skin_spray/proc/hair_icon()
 	return create_tinted_icon(icon,"installed_paint_hair",cartridge.hair_colour)
-
+	
 /obj/item/weapon/synth_skin_spray/proc/cartridge_icon()
 	return new/icon(icon,"[cartridge.installed_icon]")
-
+	
 /obj/item/weapon/synth_skin_spray/proc/charges_icon()
 	return new/icon(icon,"charges_[cartridge.current_charges]")
-
-
+	
+	
 /obj/item/weapon/synth_skin_spray/update_icon()
 	underlays.Cut()
 	overlays.Cut()
@@ -165,8 +166,8 @@ proc/create_tinted_icon(icon_name, icon_state_name, target_colour)
 		underlays += paint_icon()
 		underlays += hair_icon()
 		overlays  += charges_icon()
-
-
+		
+		
 /obj/item/weapon/synth_skin_spray/attack(mob/M, mob/user)
 	switch (user.a_intent)
 		if ("hurt")
@@ -174,8 +175,8 @@ proc/create_tinted_icon(icon_name, icon_state_name, target_colour)
 			playsound(loc, "swing_hit", 50, 1, -1)
 		if("help")
 			return try_to_paint(M,user)
-
-
+			
+			
 /obj/item/weapon/synth_skin_spray/proc/allowed_to_paint(mob/living/carbon/human/human_target, mob/user, target)
 	if (!cartridge)
 		user << "<span class='notice'>You cannot paint anything with an empty spray gun.</span>"
@@ -206,16 +207,17 @@ proc/create_tinted_icon(icon_name, icon_state_name, target_colour)
 			user << "<span class='notice'>Your [target] isn't robotic, so you decide not to try to paint it.</span>"
 		return
 	return TRUE
-
-
+	
+	
 /obj/item/weapon/synth_skin_spray/proc/try_to_paint(mob/living/carbon/human/human_target, mob/user)
 	var/target=user.zone_sel.selecting
 	if (target in list("mouth","eyes")) // we don't paint these individually
 		target="head"
 	if (allowed_to_paint(human_target,user,target))
-		paint_organ(human_target, user, human_target.get_organ(target))
-
-
+		if (do_after_to_target(user,human_target,20))
+			paint_organ(human_target, user, human_target.get_organ(target))
+		
+		
 /obj/item/weapon/synth_skin_spray/proc/paint_organ(mob/M, mob/user, datum/organ/external/datum_target)
 	if (datum_target.covering) // if we've already got a covering, remove it
 		del(datum_target.covering)
@@ -229,19 +231,17 @@ proc/create_tinted_icon(icon_name, icon_state_name, target_colour)
 		human_target.r_facial = hair_colour_as_list[1]
 		human_target.g_facial = hair_colour_as_list[2]
 		human_target.b_facial = hair_colour_as_list[3]
-		human_target.h_style=random_hair_style(human_target.gender,human_target.species)
 		human_target.update_hair()
-
-
 	if (istype(datum_target,/datum/organ/external/groin)) // this is a bit reductive, but whatever
 		var/gender_string = input(user,"What sex do you want this shell to appear as?") in list("Male","Female")
 		human_target.gender = (gender_string=="Male") ? MALE : FEMALE
+		human_target.update_tail_showing(FALSE)
 	human_target.update_body(TRUE)
 	cartridge.current_charges--
 	user.visible_message("<span class='notice'>[user] has covered [M]'s [datum_target.display_name] with [cartridge.covering_description].</span>")
 	update_icon()
-
-
+	
+	
 /obj/item/weapon/synth_skin_spray/attackby(obj/item/weapon/W, mob/user)
 	if(istype(W, /obj/item/weapon/synth_skin_cartridge))
 		if (!cartridge)
@@ -252,8 +252,8 @@ proc/create_tinted_icon(icon_name, icon_state_name, target_colour)
 			update_icon()
 		else
 			user << "<span class='notice'>You will have to remove the other cartridge first."
-
-
+			
+			
 /obj/item/weapon/synth_skin_spray/attack_hand(mob/user)
 	var/obj/item/inactive_item = user.get_inactive_hand()
 	if (src==inactive_item) // if we are clicking on this with our off hand
@@ -266,8 +266,8 @@ proc/create_tinted_icon(icon_name, icon_state_name, target_colour)
 			update_icon()
 			return
 	return ..()
-
-
+	
+	
 /obj/item/weapon/synth_skin_cartridge
 	name = "ERROR"
 	desc = "You should not be reading this."
@@ -288,20 +288,21 @@ proc/create_tinted_icon(icon_name, icon_state_name, target_colour)
 		paint_colour = rgb(128,128,128) // starts on red
 		hair_colour = rgb(128,128,128) // starts black
 		update_icon()
-
-
+		
+	
 /obj/item/weapon/synth_skin_cartridge/proc/get_charges_string()
 	return " It looks like there are [current_charges] charges left."
+	
 
-
-/obj/item/weapon/synth_skin_cartridge/examine(mob/user)
-	user << src.desc + get_charges_string()
-
-
+/obj/item/weapon/synth_skin_cartridge/examine()
+	set src in usr
+	usr << src.desc + get_charges_string()
+	
+	
 /obj/item/weapon/synth_skin_cartridge/attack_self(mob/user)
 	pick_colours(user)
-
-
+	
+	
 /obj/item/weapon/synth_skin_cartridge/proc/pick_colours(mob/user)
 	var/new_paint = input(user, "Choose the primary colour you want to paint.", "Synthetic Painting") as color|null
 	if(new_paint)
@@ -310,28 +311,28 @@ proc/create_tinted_icon(icon_name, icon_state_name, target_colour)
 	if(new_hair)
 		hair_colour = new_hair
 	update_icon()
-
-
+	
+	
 /obj/item/weapon/synth_skin_cartridge/proc/paint_icon()
 	return create_tinted_icon(icon,"bottle_paint_skin",paint_colour)
-
+	
 
 /obj/item/weapon/synth_skin_cartridge/proc/hair_icon()
 	return create_tinted_icon(icon,"bottle_paint_hair",hair_colour)
-
-
+	
+	
 /obj/item/weapon/synth_skin_cartridge/update_icon()
 	overlays.Cut()
 	if (current_charges > 0)
 		overlays += paint_icon()
 		overlays += hair_icon()
-
-
+	
+	
 /obj/item/weapon/synth_skin_cartridge/paint
 	name = "synthetic paint cartridge"
 	desc = "A small cartridge for robotic paint."
-
-
+	
+	
 /obj/item/weapon/synth_skin_cartridge/skin
 	name = "synthetic skin cartridge"
 	desc = "A small cartridge filled with pressurized synthetic skin. It's covered in thin grease."
@@ -340,8 +341,8 @@ proc/create_tinted_icon(icon_name, icon_state_name, target_colour)
 	covering_path = "/datum/synthetic_limb_cover/skin"
 	origin_tech = "materials=1;engineering=1;biotech=2"
 	covering_description = "synthetic skin"
-
-
+	
+	
 /obj/item/weapon/synth_skin_cartridge/fur
 	name = "synthetic fur cartridge"
 	desc = "A small cartridge filled with pressurized synthetic fur. Dozens of fine hairs are stuck to it with static."
@@ -350,8 +351,8 @@ proc/create_tinted_icon(icon_name, icon_state_name, target_colour)
 	covering_path = "/datum/synthetic_limb_cover/fur"
 	origin_tech = "materials=1;engineering=1;biotech=3"
 	covering_description = "synthetic fur"
-
-
+	
+	
 /obj/item/weapon/synth_skin_cartridge/scales
 	name = "synthetic scales cartridge"
 	desc = "A small cartridge filled with pressurized synthetic scales. It makes a dry crunching noise when you shake it."

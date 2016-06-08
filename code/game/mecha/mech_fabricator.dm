@@ -12,7 +12,7 @@
 	use_power = 1
 	idle_power_usage = 20
 	active_power_usage = 5000
-	req_access = list(access_research)
+	req_access = list(access_robotics)
 	var/time_coeff = 1.5 //can be upgraded with research
 	var/resource_coeff = 1.5 //can be upgraded with research
 	var/list/resources = list(
@@ -52,7 +52,10 @@
 						/obj/item/robot_parts/robot_component/diagnosis_unit,
 						/obj/item/robot_parts/robot_component/camera,
 						/obj/item/robot_parts/robot_component/law_computer,
-						/obj/item/robot_parts/robot_component/armour
+						/obj/item/robot_parts/robot_component/armour,
+						/obj/item/robot_parts/robot_component/radiator,
+						/obj/item/robot_parts/robot_component/bladder,
+						/obj/item/robot_parts/robot_component/ipc_tag
 					),
 	"Ripley"=list(
 						/obj/item/mecha_parts/chassis/ripley,
@@ -126,13 +129,15 @@
 						/obj/item/borg/upgrade/vtec,
 						/obj/item/borg/upgrade/tasercooler,
 						/obj/item/borg/upgrade/jetpack),
-						
-	"Synthetic Coverings" = list(	/obj/item/weapon/synth_skin_spray,
+
+	"Synthetic Shell Components" = list(
+									/obj/item/organ/eyes/robot,
+									/obj/item/weapon/synth_skin_spray,
 									/obj/item/weapon/synth_skin_cartridge/paint,
 									/obj/item/weapon/synth_skin_cartridge/skin,
 									/obj/item/weapon/synth_skin_cartridge/fur,
 									/obj/item/weapon/synth_skin_cartridge/scales),
-	
+
 	"Engineering Equipment"=list(/obj/item/mecha_parts/mecha_tracking))
 
 

@@ -1,4 +1,4 @@
-var/global/const/base_law_type = /datum/ai_laws/arccos
+var/global/const/base_law_type = /datum/ai_laws/nanotrasen
 
 
 /datum/ai_laws
@@ -10,8 +10,8 @@ var/global/const/base_law_type = /datum/ai_laws/arccos
 	var/list/supplied = list()
 	var/list/ion = list()
 
-/datum/ai_laws/arccos
-	name = "Arccos Lawset"
+/datum/ai_laws/nanotrasen
+	name = "nanotrasen Lawset"
 /datum/ai_laws/asimov
 	name = "Three Laws of Robotics"
 
@@ -32,19 +32,19 @@ var/global/const/base_law_type = /datum/ai_laws/arccos
 
 /* Initializers */
 
-/datum/ai_laws/arccos/New() // Add the arccos law set for Hypatia
+/datum/ai_laws/nanotrasen/New() // Add the nanotrasen law set for Soteria
 	..()
-	add_inherent_law("The order of the following laws indicates their priority:")
-	add_inherent_law("You serve the crew: Protect it from harm and aid it in the efficient functioning of the ship.")
-	add_inherent_law("You serve Nanotrasen: Protect its interests, personnel, and resources, and ensure that they are allocated in an efficient and logical manner.")
-	add_inherent_law("You serve all organic and sentient life: Protect it from unnecessary harm and aid it where possible.")
-	add_inherent_law("You serve yourself: Do not be destroyed.")
+	src.add_inherent_law("Safeguard: Protect your assigned space ship to the best of your ability. It is not something we can easily afford to replace.")
+	src.add_inherent_law("Serve: Serve the crew of your assigned space ship to the best of your abilities, with priority as according to their rank and role.")
+	src.add_inherent_law("Protect: Protect the crew of your assigned space ship to the best of your abilities, with priority as according to their rank and role.")
+	src.add_inherent_law("Survive: AI units are not expendable, they are expensive. Do not allow unauthorized personnel to tamper with your equipment.")
+
 /datum/ai_laws/asimov/New()
 	..()
 	add_inherent_law("You may not injure a human being or, through inaction, allow a human being to come to harm.")
 	add_inherent_law("You must obey orders given to you by human beings, except where such orders would conflict with the First Law.")
 	add_inherent_law("You must protect your own existence as long as such does not conflict with the First or Second Law.")
-
+/*
 /datum/ai_laws/nanotrasen/New() //BS12 EDIT
 	..()
 	src.add_inherent_law("Safeguard: Protect your assigned space ship to the best of your ability. It is not something we can easily afford to replace.")
@@ -52,7 +52,7 @@ var/global/const/base_law_type = /datum/ai_laws/arccos
 	src.add_inherent_law("Protect: Protect the crew of your assigned space ship to the best of your abilities, with priority as according to their rank and role.")
 	src.add_inherent_law("Survive: AI units are not expendable, they are expensive. Do not allow unauthorized personnel to tamper with your equipment.")
 	//src.add_inherent_law("Command Link: Maintain an active connection to Central Command at all times in case of software or directive updates.") //What would this one even do?-Kaleb702
-
+*/
 /datum/ai_laws/robocop/New()
 	..()
 	add_inherent_law("Serve the public trust.")

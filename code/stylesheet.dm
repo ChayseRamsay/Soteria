@@ -183,7 +183,7 @@ h1.alert, h2.alert {
 .vaurca {
   color: #9e9e39;
 }
-.unathi {
+.soghun {
   color: #228B22;
 }
 .solcom {

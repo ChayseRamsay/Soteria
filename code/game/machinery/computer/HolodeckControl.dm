@@ -370,7 +370,7 @@
 						T.temperature = 5000
 						T.hotspot_expose(50000,50000,1)
 			if(L.name=="Holocarp Spawn")
-				new /mob/living/simple_animal/hostile/carp(L.loc)
+				new /mob/living/simple_animal/hostile/carp/hologram(L.loc)
 
 
 /obj/machinery/computer/HolodeckControl/proc/emergencyShutdown()
@@ -635,7 +635,7 @@
 	power_channel = ENVIRON
 
 /obj/machinery/readybutton/attack_ai(mob/user as mob)
-	user << "The station AI is not to interact with these devices!"
+	user << "The ship AI is not to interact with these devices!"
 	return
 
 /obj/machinery/readybutton/attack_paw(mob/user as mob)

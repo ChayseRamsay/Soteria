@@ -172,7 +172,7 @@
 		src.add_fingerprint(usr)
 		src.togglelock(usr)
 	else
-		usr << "<span class='warning'>You're a robot, no.</span>"
+		usr << "<span class='warning'>This mob type can't use this verb.</span>"
 
 /obj/structure/closet/crate/secure/attack_hand(mob/user as mob)
 	src.add_fingerprint(user)
@@ -389,7 +389,7 @@
 	icon_closed = "secgearcrate"
 
 /obj/structure/closet/crate/secure/hydrosec
-	desc = "A crate with a lock on it, painted in the scheme of the station's botanists."
+	desc = "A crate with a lock on it, painted in the scheme of the ship's botanists."
 	name = "secure hydroponics crate"
 	icon_state = "hydrosecurecrate"
 	icon_opened = "hydrosecurecrateopen"

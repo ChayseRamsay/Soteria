@@ -48,6 +48,12 @@ CREATE TABLE `ss13_warnings` (
     `computerid` VARCHAR(32) NOT NULL,
     `ip` VARCHAR(32) NOT NULL,
     `a_ckey` VARCHAR(32) NOT NULL,
+    `acknowledged` TINYINT(1) NULL DEFAULT '0',
+    `expired` TINYINT(1) NULL DEFAULT '0',
+    `visible` TINYINT(1) NULL DEFAULT '1',
+    `edited` TINYINT(1) NULL DEFAULT '0',
+    `lasteditor` VARCHAR(32) NULL DEFAULT NULL,
+    `lasteditdate` DATETIME NULL DEFAULT NULL,
     PRIMARY KEY (`id`)
 )  ENGINE=INNODB DEFAULT CHARSET=LATIN1;
 
@@ -71,8 +77,12 @@ CREATE TABLE `ss13_news` (
     `publishtime` INT(11) NOT NULL,
     `channel` VARCHAR(64) NOT NULL,
     `author` VARCHAR(64) NOT NULL,
+	`title` VARCHAR(64) NOT NULL,
     `body` TEXT NOT NULL,
-    `notpublishing` TINYINT(1) DEFAULT NULL,
+	`status` TINYINT(1) NOT NULL DEFAULT 1,
+	`uploadip` VARCHAR(18) NOT NULL,
+	`uploadtime` DATETIME NOT NULL,
+	`approvetime` DATETIME DEFAULT NULL,
 	PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=LATIN1;
 
@@ -94,3 +104,68 @@ CREATE TABLE `ss13_notes` (
   `lasteditdate` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=LATIN1;
+
+-- ------------------------------
+-- SQL based secret santi klaus table
+-- tgstation.ss13_santa
+-- ------------------------------
+CREATE TABLE `ss13_santa` (
+  `character_name` varchar(32) NOT NULL,
+  `participation_status` tinyint(1) NOT NULL DEFAULT '1',
+  `mark_name` varchar(32) DEFAULT NULL,
+  `character_gender` varchar(32) NOT NULL,
+  `character_species` varchar(32) NOT NULL,
+  `character_job` varchar(32) NOT NULL,
+  `character_like` mediumtext NOT NULL,
+  `gift_assigned` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`character_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ------------------------------
+-- SQL table for logging whitelist modification (both ingame and website based)
+-- tgstation.ss13_whitelist_log
+-- ------------------------------
+CREATE TABLE `ss13_whitelist_log` (
+    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `datetime` DATETIME NOT NULL,
+    `user` VARCHAR(32) NOT NULL,
+    `action_method` VARCHAR(32) NOT NULL DEFAULT "Game Server",
+    `action` MEDIUMTEXT NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = latin1;
+
+-- ------------------------------
+-- SQL table for containing all whitelist flags: their names and values
+-- tgstation.ss13_whitelist_log
+-- ------------------------------
+CREATE TABLE `ss13_whitelist_statuses` (
+    `flag` INT(10) UNSIGNED NOT NULL,
+    `status_name` VARCHAR(32) NOT NULL,
+    PRIMARY KEY (`flag`)
+) ENGINE = InnoDB DEFAULT CHARSET = latin1;
+
+-- ------------------------------
+-- The missing connection log table
+-- tgstation.ss13_connection_log
+-- ------------------------------
+CREATE TABLE `ss13_connection_log` (
+    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `ckey` VARCHAR(32) NOT NULL,
+    `datetime` DATETIME NOT NULL,
+    `serverip` VARCHAR(32) NOT NULL,
+    `ip` VARCHAR(18) NOT NULL,
+    `computerid` VARCHAR(32) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = latin1;
+
+-- ------------------------------
+-- The missing connection log table
+-- tgstation.ss13_ipc_tracking
+-- ------------------------------
+CREATE TABLE `ss13_ipc_tracking` (
+    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `player_ckey` VARCHAR(32) NOT NULL,
+    `character_name` VARCHAR(255) NOT NULL,
+    `tag_status` TINYINT(1) NOT NULL DEFAULT '0',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = latin1;

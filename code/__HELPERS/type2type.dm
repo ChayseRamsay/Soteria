@@ -332,7 +332,6 @@ proc/tg_list2text(list/list, glue=",")
 	if(rights & R_MOD)			. += "[seperator]+MODERATOR"
 	if(rights & R_DEV)			. += "[seperator]+DEVELOPER"
 	if(rights & R_DUTYOFF)		. += "[seperator]+DUTYOFFICER"
-	if(rights & R_DONOR)		. += "[seperator]+DONOR"
 	return .
 
 /proc/ui_style2icon(ui_style)

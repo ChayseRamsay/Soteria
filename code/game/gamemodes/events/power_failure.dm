@@ -1,7 +1,7 @@
 
 /proc/power_failure(var/announce = 1)
 	if(announce)
-		command_alert("Abnormal activity detected in [station_name()]'s powernet. As a precautionary measure, the station's power will be shut off for an indeterminate duration.", "Critical Power Failure")
+		command_alert("Abnormal activity detected in [station_name()]'s powernet. As a precautionary measure, the ship's power will be shut off for an indeterminate duration.", "Critical Power Failure")
 		for(var/mob/M in player_list)
 			M << sound('sound/AI/poweroff.ogg')
 	for(var/obj/machinery/power/smes/S in world)
@@ -69,7 +69,7 @@
 		S.updateicon()
 		S.power_change()
 	for(var/area/A in world)
-		if(A.name != "Space" && A.name != "Engine Walls" && A.name != "Chemical Lab Test Chamber" && A.name != "space" && A.name != "Escape Shuttle" && A.name != "Arrival Area" && A.name != "Arrival Shuttle" && A.name != "start area" && A.name != "Engine Combustion Chamber")
+		if(A.name != "\improper Space" && A.name != "Engine Walls" && A.name != "Chemical Lab Test Chamber" && A.name != "space" && A.name != "Escape Shuttle" && A.name != "Arrival Area" && A.name != "Arrival Shuttle" && A.name != "start area" && A.name != "Engine Combustion Chamber")
 			A.power_light = 1
 			A.power_equip = 1
 			A.power_environ = 1
